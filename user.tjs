@@ -1,0 +1,36 @@
+bcrypt = require('bcrypt')
+
+exports.signup = function(req, res){
+  await bcrypt.genSalt(10, defer(var err, salt)); 
+  await bcrypt.hash(req.form.password, salt, defer(var err, hash)); 
+  req.body.password = hash;
+  await db.collection('users').insert(req.body, defer(var err, user));
+  req.session.user = user;
+  res.send({success: true, msg: 'signup successful' }); 
+};
+
+
+exports.check_username = function(req, res){
+  await db.collection('users').findOne({username: req.form.username}, defer(var err, user));
+  return user 
+    ? res.send(false) 
+    : res.send(true);
+};
+
+
+exports.check_email = function(req, res){
+  await db.collection('users').findOne({email: req.form.email}, defer(var err, user));
+    return user
+      ? res.send(false)
+      : res.send(true);
+};
+
+
+exports.login = function(req, res){
+  await db.collection('users').findOne({email: req.form.email}, defer(var err, user));
+  if (!user) return res.send(false);
+  await bcrypt.compare(req.form.password, user.password, defer(var err, match));
+  if (!match) return res.send(false);
+  req.session.user = user;
+  res.send(true);  
+};

@@ -4,7 +4,6 @@ var mongoose = require('mongoose')
   , ObjectId = Schema.ObjectId
 
 
-Message = new Schema({
   'author': String,
   'body': String,
   'labels': [String],

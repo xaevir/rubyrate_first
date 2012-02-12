@@ -6,23 +6,29 @@
 require.config({
   paths: {
     jquery: 'libs/jquery/jquery-min',
-    underscore: 'libs/underscore/underscore-min',
-    backbone: 'libs/backbone/backbone-amd',
+    underscore: 'libs/underscore/underscore',
+    backbone: 'libs/backbone/backbone',
     text: 'libs/require/text',
+    order: 'libs/require/order',
     templates: '../templates'
   }
 
 });
 
+
+/*
+ *  calling them in order bc not amd.
+ *  in order to call App, the fn has to be passed
+ *  placeholder args
+ */ 
 require([
-
-  // Load our app module and pass it to our definition function
-  'app'
-
-  // Some plugins have to be loaded in order due to their non AMD compliance
-  // Because these scripts are not "modules" they do not pass any values to the definition function below
-], function(App){
-  // The "app" dependency is passed in as "App"
-  // Again, the other dependencies passed in are not "AMD" therefore don't pass a parameter to this function
+  'order!jquery',          
+  'order!libs/utilities',   
+  'order!underscore',       
+  'order!backbone',         
+  'libs/jade/jade',        
+  'bootstrap/js/bootstrap-dropdown.js',
+  'order!app'             
+], function(a, b, c, d, e, f, App){
   App.initialize();
 });

@@ -1,52 +1,42 @@
 define([
-  'jquery',
-  'underscore',
-  'backbone',
-], function($, _, Backbone){
-
-  var Model = Backbone.Model.extend({
-  });
-
-  var Collection = Backbone.Collection.extend({
-
-      model: Model,
-
-  });
-
+  'libs/hogan.js/web/builds/1.0.5/hogan-1.0.5.min.amd',
+  '/bootstrap/js/bootstrap-alert.js'
+], function(hogan){
 
   var AlertView = Backbone.View.extend({
 
     el: '#app',
   
+    template: hogan.compile('\
+      <div class="alert alert-{{type}}">\
+        {{{message}}}\
+       </div>'),
+
+
     events: {
-      //'submit form' : 'submit'
+      // twitter bootstrap handles these
     },
 
-    initialize: function(){
+    initialize: function(options){
+        options = options || {};
+        this.message = options.message;
+        this.type = options.type;
+        this.timer = options.timer || false
         _.bindAll(this, 'render'); 
-        this.collection = new Collection;
     },
 
-    render: function(msg_type, msg){
-      
-      if (this.collection.length > 0) 
-        return  
-
-      this.collection.add({alert: true})
-
-      if (msg_type == 'error')
-        var strong = '<strong>Heads up!</strong>';
-      else
-        var strong = '';
-         
-      var html = '<div class="alert alert-'+ msg_type + '">'
-          html += strong + ' ';
-          html += '<p>' + msg + '</p>'
-          html += '</div>'
+    render: function(){
+      var html = this.template.render({type: this.type, message: this.message});
       var html  = $(html);
-      $(this.el).after(html);
-      $(html).center();
-      return this; 
+      $(this.el).prepend(html);
+      html.center();
+      if(this.timer) {
+        var t = setTimeout(function(){
+          $('.alert').fadeOut('slow', function() {
+            $('.alert').remove();
+           });
+        }, 3000);
+      }
     },
 
   });

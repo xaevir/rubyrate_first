@@ -1,10 +1,7 @@
 define([
-  'jquery',
-  'underscore',
-  'backbone',
   'libs/hogan.js/web/builds/1.0.5/hogan-1.0.5.min.amd',
   'views/users/signup',
-], function($, _, Backbone, hogan){
+], function(hogan){
 
   var Model = Backbone.Model.extend({
   });

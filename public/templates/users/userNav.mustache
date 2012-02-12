@@ -1,0 +1,12 @@
+{{#user}}
+  <li><a href="/logout">Logout ({{name}})</a></li> 
+{{/user}}
+{{^user}}
+  <li class="dropdown" id="signup">
+    <a href="#signup" class="dropdown-toggle" data-toggle="dropdown">Sign Up<b class="caret"></b></a>
+    <ul class="dropdown-menu">
+    {{{signup}}}
+    </ul>
+  </li>
+  <li><a href="/login">Login</a></li>
+{{/user}}

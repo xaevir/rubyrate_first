@@ -1,12 +1,8 @@
 // Filename: router.js
 define([
-  'jquery',
-  'underscore',
-  'backbone',
   'views/users/signup',
   'views/users/login',
-  'views/site/navbar',
-], function($, _, Backbone, SignupView, LoginView, Navbar){
+], function(SignupView, LoginView, Navbar){
 
   
 
@@ -19,50 +15,68 @@ define([
 
     var Model = Backbone.Model.extend({ });
 
-    var Collection = Backbone.Collection.extend({
-        model: Model,
+    var Collection = Backbone.Collection.extend({ model: Model,
     });
 
 
-  var AppRouter = Backbone.Router.extend({
+  var Router = Backbone.Router.extend({
 
-      initialize: function(url) {
-          _.bindAll(this, 'render', 'addOne'); 
+      initialize: function(options) {
+        this.user = options.user;
+        _.bindAll(this, 'signup', 'login'); 
       },
-
 
       routes: {
           '':               'index'
         , 'signup':         'signup'
         , 'login':          'login'
-        //'*actions':     'defaultAction'
+        //'*actions': his    'defaultAction'
       }
 
     , index: function() { 
         showStatic('/'); 
-        url.trigger("selected", "index");
-
       }
-
+ 
     , signup: function(){ 
-        var view = new SignupView({'el': '#app', app_router: this})
-        view.render();
+        //if (document.referrer == '')
+        var view = new SignupView({user: this.user, context: 'main'})
+        $('#app').html(view.render().el);
         document.title = 'Sign Up';
       }
 
     , login: function(){ 
-        var view = new LoginView({'el': '#app', app_router: this})
+        var view = new LoginView({'el': '#app', user: this.user})
         view.render()
         document.title = 'Login';
       }
     
   });
 
-  var initialize = function(url){
-    var app_router = new AppRouter(url);
+
+  Router.prototype.bind('all ', function(route, section) {
+      route = route.replace('route:', '/');
+       
+      if (route == '/index') 
+        var el = $('#home') // have 2 home links, logo and home
+      else 
+        var el = $('a[href="' + route + '"]');
+
+      // If current route is highlighted, we're done.
+      if (el.hasClass('active')) 
+          return;
+      else {
+          // Unhighlight active tab.
+          $('.navbar li.active').removeClass('active');
+          // Highlight active page tab.
+          el.parent().addClass('active');
+      }
+  });
+
+  var initialize = function(user){
+    new Router({user: user});
     Backbone.history.start({pushState: true});
-    return app_router;
   };
+
   return {
     initialize: initialize
   };

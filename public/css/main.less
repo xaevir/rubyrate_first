@@ -18,8 +18,14 @@
 }
 
 body {
-  background-color: #fcfcfc;
-//  background: url(/img/bg.png) repeat top left;
+//  background-color: #f2f2f2;
+//  background: url(/img/page-bg.png) repeat top left;
+  background: url(/img/shadow_up.png) no-repeat top center;
+}
+
+.navbar {
+  //margin-bottom: 0;
+
 }
 
 .navbar .nav > li > a {
@@ -57,23 +63,35 @@ body {
   background-image: -o-linear-gradient(top, #f5f5f5 0%,#eeeeee 100%); /* Opera 11.10+ */
   filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#f5f5f5', endColorstr='#eeeeee',GradientType=0 ); /* IE6-9 */
   background-image: linear-gradient(top, #f5f5f5 0%,#eeeeee 100%); /* W3C */
-  border: 1px solid #e5e5e5;
-  border-color: #D5D5D5;
-  border-radius: 0 0 0 0;
-  border-width: 0 0 1px;
-  box-shadow: 0 1px 0 #FFFFFF inset, 0 1px 5px rgba(0, 0, 0, 0.1);
- // left: 0;
- // position: fixed;
-  //right: 0;
-  //top: 40px;
-  //z-index: 1030;
+ // border: 1px solid #e5e5e5;
+//  border-color: #D5D5D5;
+//  border-radius: 0 0 0 0;
+//  border-width: 0 0 1px;
+  box-shadow: none;
+  background: none;
+//  #gradient > .vertical( #F6F8F9,  #E9EFF2);
+
 }
+
+
+
+.shadow {
+  height: 204px;
+  width: 100%;
+  background: url(/img/shadow_up.png) no-repeat top center;
+  position: absolute;
+  z-index: -10;
+
+}
+
+
 .navbar .brand {
   overflow: hidden;
   text-indent: 5000px;
   background: url(/img/logo.png) no-repeat top left;
-  width: 173px;
-  height: 36px;
+  width: 166px;
+  height: 22px;
+  margin-top: 5px;
   padding: 0 20px 0 0;
 }
 
@@ -90,6 +108,19 @@ body {
     background-color: #EEEEEE;
     text-decoration: none;
     color: @linkColorHover;
+}
+
+
+.navbar .nav > .active > a,
+.navbar .nav > .active > a:hover {
+  padding-left: 13px;
+  color: #777;
+  background-color: rgba(0,0,0,.05);
+  border-right-color: #ddd;
+  border-left: 0;
+  -webkit-box-shadow: inset 0 3px 5px rgba(0,0,0,.05);
+     -moz-box-shadow: inset 0 3px 5px rgba(0,0,0,.05);
+          box-shadow: inset 0 3px 5px rgba(0,0,0,.05);
 }
 
 /* Override some defaults */
@@ -118,6 +149,10 @@ body {
   margin: 0 auto;
   margin-top: 30px;
   float: none; //override bootstrap
+
+  #gradient > .vertical( #f5f5f5,  #fdfdfd);
+  box-shadow: 0 0 2px rgba(0, 0, 0, 0.2), 0 0 1px rgba(0, 0, 0, 0.2);
+
 }
 
 
@@ -136,7 +171,7 @@ body {
 
 
 .hero-unit {
-  background: rgba(0, 0, 0, .2);
+  background: none;
   font-family: 'Calluna', serif;  
   h1 {
     font-weight: normal; 
@@ -183,6 +218,12 @@ form input.error {
 }
 
 .alert {
-  .box-shadow(0 2px 4px rgba(0,0,0,0.2));
+  .box-shadow(0 2px 2px rgba(0,0,0,0.2));
   top: 15px !important;
+}
+
+
+.navbar .nav .dropdown-toggle .caret, 
+.navbar .nav .open.dropdown .caret {
+    border-top-color: #000000;
 }

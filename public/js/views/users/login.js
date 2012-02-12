@@ -1,23 +1,20 @@
 define([
-  'jquery',
-  'underscore',
-  'backbone',
   'text!templates/users/login.jade',
   'views/site/alert',
   'libs/jade/jade',
   'libs/jquery-validation/jquery.validate',
-], function($, _, Backbone, tpl, AlertView){
+], function(tpl, AlertView){
 
   var Model = Backbone.Model.extend({ 
     url: '/login',
     
     rules: {
       email: {
-        required: true,
+        required: true
       },
       password: {
-        required: true,
-      },
+        required: true
+      }
     }
   });
 
@@ -29,10 +26,12 @@ define([
       //'submit form' : 'submit'
     },
 
-    initialize: function(){
-        _.bindAll(this, 'render', 'submitHandler', 'xhr'); 
+    alreadyAlerted: false,
+
+    initialize: function(options){
+        _.bindAll(this, 'render', 'submitHandler', 'ajax_success'); 
         this.model = new Model;
-        this.alert = new AlertView()
+        this.user = options.user;
     },
 
     render: function(){
@@ -42,27 +41,32 @@ define([
         var form = $('form', this.el); 
         $(form).validate({
             rules: this.model.rules,
-            debug: true,
             submitHandler: this.submitHandler, 
         });
         return this; 
     },
 
-    submitHandler: function(){
+    submitHandler: function() {
       var params = $('form', this.el).serializeObject();
-      this.model.save(params, {success: this.xhr})
+      $.post('/login', params,  this.ajax_success) 
     },
 
-    xhr: function(model, res, xhr){
-      if (res === true)
-        this.options.app_router.navigate('/', true)
-      if (res === false){
-        this.alert.render('error', 'Please check your email or password')
-      }
-    },
-
+    ajax_success: function(res){
+      if (res.success === true) {
+        this.user.set({username: res.data.username});
+        var router = new Backbone.Router();
+        router.navigate('/', true);
+        return
+      } 
+      if (this.alreadyAlerted) return; 
+      var alert_view = new AlertView();
+      alert_view.message = '<strong>Heads Up!</strong> Please check your email or password';
+      alert_view.type = 'error';
+      alert_view.render();
+      this.alreadyAlerted = true; 
+    }
   });
   
-  return LoginView 
+  return LoginView;
 
 });

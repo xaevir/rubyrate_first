@@ -10,7 +10,7 @@ exports.signup = function(req, res){
 };
 
 
-exports.check_username = function(req, res){
+exports.is_username_valid = function(req, res){
   await db.collection('users').findOne({username: req.form.username}, defer(var err, user));
   return user 
     ? res.send(false) 
@@ -27,10 +27,14 @@ exports.check_email = function(req, res){
 
 
 exports.login = function(req, res){
+  var fail_res = {success: false, message: 'user login unsuccessful'};
   await db.collection('users').findOne({email: req.form.email}, defer(var err, user));
-  if (!user) return res.send(false);
+  if (!user) return res.send(fail_res);
   await bcrypt.compare(req.form.password, user.password, defer(var err, match));
-  if (!match) return res.send(false);
+  if (!match) return res.send(fail_res);
   req.session.user = user;
-  res.send(true);  
+  res.send({success: true, 
+            message: 'user successfully logged in',
+            data: {username: user.username}
+           });
 };

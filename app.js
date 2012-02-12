@@ -13,6 +13,8 @@ var express = require('express')
   , tame = require('tamejs').register() // register the *.tjs suffix
   , site = require('./site')
   , user = require('./user.tjs')
+  , Backbone = require('backbone')
+  , bcrypt = require('bcrypt')
 
 db = mongo.db('localhost/rubyrate?auto_reconnect');
 
@@ -76,6 +78,13 @@ function isXhr(req, res, next) {
 */
 function isValid(req, res, next) {
   if (!req.form.isValid)
+    res.send({success: false, message: 'invalid data'});
+  else
+    next();
+}
+
+function isValidSimple(req, res, next) {
+  if (!req.form.isValid)
     res.send(false);
   else
     next();
@@ -103,10 +112,10 @@ app.post('/signup',
 );
 
 
-app.get("/check-username", 
+app.get("/is-username-valid", 
     form(validate("username").required().isAlphanumeric().minLength(2).maxLength(60))
-  , isValid 
-  , user.check_username
+  , isValidSimple 
+  , user.is_username_valid
 );
 
 
@@ -116,10 +125,10 @@ app.get("/check-email",
   , user.check_email
 );
 
-app.get("/check-loggedin", function(req, res) {
+app.get("/user", function(req, res) {
   return req.session.user 
-    ? res.send({success: true, msg: 'users is logged in', name: req.session.user.username}) 
-    : res.send({success: true, msg: 'users is not logged in'})
+    ? res.send({username: req.session.user.username}) 
+    : res.send({success: false, msg: 'users is not logged in' })
 });
 
 
@@ -129,24 +138,28 @@ app.get('/login', isXhr, function(req, res) {
   });
 });
 
-app.post('/login', 
-    form(
-      validate("password").required().minLength(6)
-    , validate("email").required().isEmail()
-    )
-  , isValid
-  , user.login
-);
-
-
+app.post('/login', function(req, req) {
+  var fail_res = {success: false, message: 'user login unsuccessful'};
+  db.collection('users').findOne({email: req.body.email}, function(err, user){
+    if (!user) 
+      return res.send(fail_res);
+    bcrypt.compare(req.body.password, user.password, function(err, match) {
+      if (!match) 
+        return res.send(fail_res)
+      req.session.user = user;
+      res.send({success: true, 
+                message: 'user successfully logged in',
+                data: {username: user.username}
+               });
+    })
+  })
+})
 
 app.get('/logout', function(req, res) {
   req.session.destroy(function(){
     res.redirect('home');
   });
 });
-
-
 
 app.post('/sessions', function(req, res) {
   User.find({ email: req.body.user.email }).first(function(user) {
@@ -158,6 +171,11 @@ app.post('/sessions', function(req, res) {
       res.redirect('/sessions/new');
     }
   }); 
+});
+
+app.post('/wishes', function(req, res) {
+  
+
 });
 
 

@@ -1,20 +1,20 @@
 define([
-  'jquery', 'underscore', 'backbone', 'router', 
+  'router', 
+  'views/navBar',
   'views/site/body',
-  'views/site/navbar',
-  'libs/utilities'
-], function($, _, Backbone, Router, BodyView, Navbar, utilities){
+  'bootstrap/js/bootstrap-dropdown.js'
+], function(Router, NavBar, BodyView){
   var initialize = function(){
 
-    var url = {};
+    var user = new Backbone.Model;
+    user.url = '/user';
+    user.fetch();
+    
+    BodyView.initialize();
+    NavBar.initialize(user);
+    Router.initialize(user);
 
-    _.extend(url, Backbone.Events);
 
-    Navbar.initialize(url);
-  
-    var app_router = Router.initialize(url);
-
-    new BodyView({el: 'body', app_router: app_router});
   }
 
   return {

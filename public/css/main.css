@@ -6387,3 +6387,7 @@ form label.error {
 .navbar .nav .dropdown-toggle .caret, .navbar .nav .open.dropdown .caret {
   border-top-color: #000000;
 }
+.modal-wish {
+  margin: -100px 0 0 0 !important;
+  width: inherit !important;
+}

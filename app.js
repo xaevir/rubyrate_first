@@ -13,10 +13,17 @@ var express = require('express')
   , tame = require('tamejs').register() // register the *.tjs suffix
   , site = require('./site')
   , user = require('./user.tjs')
-  , Backbone = require('backbone')
+//  , Backbone = require('backbone')
   , bcrypt = require('bcrypt')
+  , requirejs = require('requirejs')
+//  ,  _ = require('underscore')
 
 db = mongo.db('localhost/rubyrate?auto_reconnect');
+
+requirejs.config({
+    baseUrl: __dirname + '/public/js/',
+//    nodeRequire: require
+});
 
 var app = module.exports = express.createServer();
 
@@ -42,7 +49,7 @@ app.configure('production', function(){
 
 
 function loadUser(req, res, next) {
-  if (req.session.user_id) {
+  if (req.session.user) {
     User.findById(req.session.user_id, function(user) {
       if (user) {
         req.currentUser = user;
@@ -138,19 +145,52 @@ app.get('/login', isXhr, function(req, res) {
   });
 });
 
-app.post('/login', function(req, req) {
+
+app.post('/login_test', function(req, res) {
+  requirejs(['libs/underscore/underscore', 'libs/backbone/backbone', 'models/wish', 'libs/backbone.validation'],
+    function (a, b , Wish) {
+
+      var Model = Backbone.Model.extend({
+        validation: {
+          email: { required: true },
+          password: { required: true },
+        }
+      })
+      _.extend(Backbone.Validation.callbacks, {
+        valid: function(view, attr, selector) { },
+        invalid: function(view, attr, error, selector) {  }
+      });
+
+      var model = new Model(req.body)
+      var view = new Backbone.View.extend()
+      view.model = model
+      Backbone.Validation.bind(view);
+
+      if (model.isValid(true)) {   
+        console.log('cool all thru') 
+      }
+      else {
+        console.log('bad stuff') 
+      }
+  });
+
+})
+
+app.post('/login', function(req, res) {
   var fail_res = {success: false, message: 'user login unsuccessful'};
   db.collection('users').findOne({email: req.body.email}, function(err, user){
-    if (!user) 
+    if (!user) {  
       return res.send(fail_res);
+    }
     bcrypt.compare(req.body.password, user.password, function(err, match) {
-      if (!match) 
+      if (!match) {
         return res.send(fail_res)
+      }
       req.session.user = user;
       res.send({success: true, 
                 message: 'user successfully logged in',
                 data: {username: user.username}
-               });
+      })
     })
   })
 })
@@ -174,8 +214,26 @@ app.post('/sessions', function(req, res) {
 });
 
 app.post('/wishes', function(req, res) {
-  
+   requirejs(['libs/underscore/underscore', 'libs/backbone/backbone', 'models/wish', 'libs/backbone.validation'],
+    function (a, b , Wish) {
+      _.extend(Backbone.Validation.callbacks, {
+        valid: function(view, attr, selector) {},
+        invalid: function(view, attr, error, selector) {}
+      });
 
+      var wish = new Wish(req.body)
+      var view = new Backbone.View.extend()
+      view.model = wish
+      Backbone.Validation.bind(view);
+
+      if (wish.isValid(true)) {   
+        db.collection('wishes').insert(model.toJSON(), function(err, id){
+          
+      }
+      else {
+        console.log('bad stuff') 
+      }
+  });
 });
 
 

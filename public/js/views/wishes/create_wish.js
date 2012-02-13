@@ -10,7 +10,7 @@ function (AlertView, tpl, Wish) {
 
     template: jade.compile(tpl),
    
-    className: 'modal',
+    className: 'modal modal-wish fade',
 
     events: {
       'keyup :input': 'setAttr',
@@ -18,7 +18,7 @@ function (AlertView, tpl, Wish) {
       'submit form' : 'submit'
     },
 
-    submit_btn: '',
+    button: '',
 
     initialize: function() {
       _.bindAll(this, 'render', 'submit');
@@ -26,7 +26,6 @@ function (AlertView, tpl, Wish) {
       Backbone.Validation.bind(this);
       this.model.bind("validated:valid", this.valid, this);
       this.model.bind("validated:invalid", this.invalid, this);
-      this.submit_btn = $('.btn', this.el);
     },
 
     setAttr: function(e) {
@@ -39,18 +38,20 @@ function (AlertView, tpl, Wish) {
     },
 
     valid: function(model) {
-        this.submit_btn.removeAttr('disabled');
+      this.button.removeAttr('disabled');
     },
 
     invalid: function(model) {
-        if (this.submit_btn.attr('disabled')) return
-        this.submit_btn.attr('disabled', 'true')
+        if (this.button.attr('disabled')) return
+        this.button.attr('disabled', 'true')
     },
   
     render: function () {
       var template = this.template();
       $(this.el).html(template);
       $(this.el).modal('show');
+      $(this.el).center();
+      this.button = $('button[type="submit"]', this.el);
     },
 
     submit: function (form) {

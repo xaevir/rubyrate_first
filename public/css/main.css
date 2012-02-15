@@ -5534,7 +5534,7 @@ a.thumbnail:hover {
 }
 @media (min-width: 1200px) {
   .row {
-    margin-left: -20px;
+    margin-left: -30px;
     *zoom: 1;
     *zoom: 1;
   }
@@ -5554,104 +5554,104 @@ a.thumbnail:hover {
   }
   [class*="span"] {
     float: left;
-    margin-left: 20px;
+    margin-left: 30px;
     float: left;
-    margin-left: 20px;
+    margin-left: 30px;
   }
   .span1 {
-    width: 60px;
-    width: 60px;
+    width: 70px;
+    width: 70px;
   }
   .span2 {
-    width: 140px;
-    width: 140px;
+    width: 170px;
+    width: 170px;
   }
   .span3 {
-    width: 220px;
-    width: 220px;
+    width: 270px;
+    width: 270px;
   }
   .span4 {
-    width: 300px;
-    width: 300px;
+    width: 370px;
+    width: 370px;
   }
   .span5 {
-    width: 380px;
-    width: 380px;
+    width: 470px;
+    width: 470px;
   }
   .span6 {
-    width: 460px;
-    width: 460px;
+    width: 570px;
+    width: 570px;
   }
   .span7 {
-    width: 540px;
-    width: 540px;
+    width: 670px;
+    width: 670px;
   }
   .span8 {
-    width: 620px;
-    width: 620px;
+    width: 770px;
+    width: 770px;
   }
   .span9 {
-    width: 700px;
-    width: 700px;
+    width: 870px;
+    width: 870px;
   }
   .span10 {
-    width: 780px;
-    width: 780px;
+    width: 970px;
+    width: 970px;
   }
   .span11 {
-    width: 860px;
-    width: 860px;
+    width: 1070px;
+    width: 1070px;
   }
   .span12, .container {
-    width: 940px;
-    width: 940px;
+    width: 1170px;
+    width: 1170px;
   }
   .offset1 {
-    margin-left: 100px;
-    margin-left: 100px;
+    margin-left: 130px;
+    margin-left: 130px;
   }
   .offset2 {
-    margin-left: 180px;
-    margin-left: 180px;
+    margin-left: 230px;
+    margin-left: 230px;
   }
   .offset3 {
-    margin-left: 260px;
-    margin-left: 260px;
+    margin-left: 330px;
+    margin-left: 330px;
   }
   .offset4 {
-    margin-left: 340px;
-    margin-left: 340px;
+    margin-left: 430px;
+    margin-left: 430px;
   }
   .offset5 {
-    margin-left: 420px;
-    margin-left: 420px;
+    margin-left: 530px;
+    margin-left: 530px;
   }
   .offset6 {
-    margin-left: 500px;
-    margin-left: 500px;
+    margin-left: 630px;
+    margin-left: 630px;
   }
   .offset7 {
-    margin-left: 580px;
-    margin-left: 580px;
+    margin-left: 730px;
+    margin-left: 730px;
   }
   .offset8 {
-    margin-left: 660px;
-    margin-left: 660px;
+    margin-left: 830px;
+    margin-left: 830px;
   }
   .offset9 {
-    margin-left: 740px;
-    margin-left: 740px;
+    margin-left: 930px;
+    margin-left: 930px;
   }
   .offset10 {
-    margin-left: 820px;
-    margin-left: 820px;
+    margin-left: 1030px;
+    margin-left: 1030px;
   }
   .offset11 {
-    margin-left: 900px;
-    margin-left: 900px;
+    margin-left: 1130px;
+    margin-left: 1130px;
   }
   .row {
-    margin-left: -20px;
+    margin-left: -30px;
     *zoom: 1;
     *zoom: 1;
   }
@@ -5671,101 +5671,101 @@ a.thumbnail:hover {
   }
   [class*="span"] {
     float: left;
-    margin-left: 20px;
+    margin-left: 30px;
     float: left;
-    margin-left: 20px;
+    margin-left: 30px;
   }
   .span1 {
-    width: 60px;
-    width: 60px;
+    width: 70px;
+    width: 70px;
   }
   .span2 {
-    width: 140px;
-    width: 140px;
+    width: 170px;
+    width: 170px;
   }
   .span3 {
-    width: 220px;
-    width: 220px;
+    width: 270px;
+    width: 270px;
   }
   .span4 {
-    width: 300px;
-    width: 300px;
+    width: 370px;
+    width: 370px;
   }
   .span5 {
-    width: 380px;
-    width: 380px;
+    width: 470px;
+    width: 470px;
   }
   .span6 {
-    width: 460px;
-    width: 460px;
+    width: 570px;
+    width: 570px;
   }
   .span7 {
-    width: 540px;
-    width: 540px;
+    width: 670px;
+    width: 670px;
   }
   .span8 {
-    width: 620px;
-    width: 620px;
+    width: 770px;
+    width: 770px;
   }
   .span9 {
-    width: 700px;
-    width: 700px;
+    width: 870px;
+    width: 870px;
   }
   .span10 {
-    width: 780px;
-    width: 780px;
+    width: 970px;
+    width: 970px;
   }
   .span11 {
-    width: 860px;
-    width: 860px;
+    width: 1070px;
+    width: 1070px;
   }
   .span12, .container {
-    width: 940px;
-    width: 940px;
+    width: 1170px;
+    width: 1170px;
   }
   .offset1 {
-    margin-left: 100px;
-    margin-left: 100px;
+    margin-left: 130px;
+    margin-left: 130px;
   }
   .offset2 {
-    margin-left: 180px;
-    margin-left: 180px;
+    margin-left: 230px;
+    margin-left: 230px;
   }
   .offset3 {
-    margin-left: 260px;
-    margin-left: 260px;
+    margin-left: 330px;
+    margin-left: 330px;
   }
   .offset4 {
-    margin-left: 340px;
-    margin-left: 340px;
+    margin-left: 430px;
+    margin-left: 430px;
   }
   .offset5 {
-    margin-left: 420px;
-    margin-left: 420px;
+    margin-left: 530px;
+    margin-left: 530px;
   }
   .offset6 {
-    margin-left: 500px;
-    margin-left: 500px;
+    margin-left: 630px;
+    margin-left: 630px;
   }
   .offset7 {
-    margin-left: 580px;
-    margin-left: 580px;
+    margin-left: 730px;
+    margin-left: 730px;
   }
   .offset8 {
-    margin-left: 660px;
-    margin-left: 660px;
+    margin-left: 830px;
+    margin-left: 830px;
   }
   .offset9 {
-    margin-left: 740px;
-    margin-left: 740px;
+    margin-left: 930px;
+    margin-left: 930px;
   }
   .offset10 {
-    margin-left: 820px;
-    margin-left: 820px;
+    margin-left: 1030px;
+    margin-left: 1030px;
   }
   .offset11 {
-    margin-left: 900px;
-    margin-left: 900px;
+    margin-left: 1130px;
+    margin-left: 1130px;
   }
   .row-fluid {
     width: 100%;
@@ -5919,239 +5919,101 @@ a.thumbnail:hover {
     width: 100%;
     width: 100%;
   }
-  .row {
-    margin-left: -20px;
-    *zoom: 1;
-    *zoom: 1;
-  }
-  .row:before, .row:after {
-    display: table;
-    content: "";
-  }
-  .row:after {
-    clear: both;
-  }
-  .row:before, .row:after {
-    display: table;
-    content: "";
-  }
-  .row:after {
-    clear: both;
-  }
-  [class*="span"] {
-    float: left;
-    margin-left: 20px;
-    float: left;
-    margin-left: 20px;
-  }
-  .span1 {
+  input.span1, textarea.span1, .uneditable-input.span1 {
     width: 60px;
     width: 60px;
   }
-  .span2 {
-    width: 140px;
-    width: 140px;
+  input.span2, textarea.span2, .uneditable-input.span2 {
+    width: 160px;
+    width: 160px;
   }
-  .span3 {
-    width: 220px;
-    width: 220px;
+  input.span3, textarea.span3, .uneditable-input.span3 {
+    width: 260px;
+    width: 260px;
   }
-  .span4 {
-    width: 300px;
-    width: 300px;
+  input.span4, textarea.span4, .uneditable-input.span4 {
+    width: 360px;
+    width: 360px;
   }
-  .span5 {
-    width: 380px;
-    width: 380px;
-  }
-  .span6 {
+  input.span5, textarea.span5, .uneditable-input.span5 {
     width: 460px;
     width: 460px;
   }
-  .span7 {
-    width: 540px;
-    width: 540px;
+  input.span6, textarea.span6, .uneditable-input.span6 {
+    width: 560px;
+    width: 560px;
   }
-  .span8 {
-    width: 620px;
-    width: 620px;
+  input.span7, textarea.span7, .uneditable-input.span7 {
+    width: 660px;
+    width: 660px;
   }
-  .span9 {
-    width: 700px;
-    width: 700px;
+  input.span8, textarea.span8, .uneditable-input.span8 {
+    width: 760px;
+    width: 760px;
   }
-  .span10 {
-    width: 780px;
-    width: 780px;
-  }
-  .span11 {
+  input.span9, textarea.span9, .uneditable-input.span9 {
     width: 860px;
     width: 860px;
   }
-  .span12, .container {
-    width: 940px;
-    width: 940px;
+  input.span10, textarea.span10, .uneditable-input.span10 {
+    width: 960px;
+    width: 960px;
   }
-  .offset1 {
-    margin-left: 100px;
-    margin-left: 100px;
+  input.span11, textarea.span11, .uneditable-input.span11 {
+    width: 1060px;
+    width: 1060px;
   }
-  .offset2 {
-    margin-left: 180px;
-    margin-left: 180px;
+  input.span12, textarea.span12, .uneditable-input.span12 {
+    width: 1160px;
+    width: 1160px;
   }
-  .offset3 {
-    margin-left: 260px;
-    margin-left: 260px;
-  }
-  .offset4 {
-    margin-left: 340px;
-    margin-left: 340px;
-  }
-  .offset5 {
-    margin-left: 420px;
-    margin-left: 420px;
-  }
-  .offset6 {
-    margin-left: 500px;
-    margin-left: 500px;
-  }
-  .offset7 {
-    margin-left: 580px;
-    margin-left: 580px;
-  }
-  .offset8 {
-    margin-left: 660px;
-    margin-left: 660px;
-  }
-  .offset9 {
-    margin-left: 740px;
-    margin-left: 740px;
-  }
-  .offset10 {
-    margin-left: 820px;
-    margin-left: 820px;
-  }
-  .offset11 {
-    margin-left: 900px;
-    margin-left: 900px;
-  }
-  .row {
-    margin-left: -20px;
-    *zoom: 1;
-    *zoom: 1;
-  }
-  .row:before, .row:after {
-    display: table;
-    content: "";
-  }
-  .row:after {
-    clear: both;
-  }
-  .row:before, .row:after {
-    display: table;
-    content: "";
-  }
-  .row:after {
-    clear: both;
-  }
-  [class*="span"] {
-    float: left;
-    margin-left: 20px;
-    float: left;
-    margin-left: 20px;
-  }
-  .span1 {
+  input.span1, textarea.span1, .uneditable-input.span1 {
     width: 60px;
     width: 60px;
   }
-  .span2 {
-    width: 140px;
-    width: 140px;
+  input.span2, textarea.span2, .uneditable-input.span2 {
+    width: 160px;
+    width: 160px;
   }
-  .span3 {
-    width: 220px;
-    width: 220px;
+  input.span3, textarea.span3, .uneditable-input.span3 {
+    width: 260px;
+    width: 260px;
   }
-  .span4 {
-    width: 300px;
-    width: 300px;
+  input.span4, textarea.span4, .uneditable-input.span4 {
+    width: 360px;
+    width: 360px;
   }
-  .span5 {
-    width: 380px;
-    width: 380px;
-  }
-  .span6 {
+  input.span5, textarea.span5, .uneditable-input.span5 {
     width: 460px;
     width: 460px;
   }
-  .span7 {
-    width: 540px;
-    width: 540px;
+  input.span6, textarea.span6, .uneditable-input.span6 {
+    width: 560px;
+    width: 560px;
   }
-  .span8 {
-    width: 620px;
-    width: 620px;
+  input.span7, textarea.span7, .uneditable-input.span7 {
+    width: 660px;
+    width: 660px;
   }
-  .span9 {
-    width: 700px;
-    width: 700px;
+  input.span8, textarea.span8, .uneditable-input.span8 {
+    width: 760px;
+    width: 760px;
   }
-  .span10 {
-    width: 780px;
-    width: 780px;
-  }
-  .span11 {
+  input.span9, textarea.span9, .uneditable-input.span9 {
     width: 860px;
     width: 860px;
   }
-  .span12, .container {
-    width: 940px;
-    width: 940px;
+  input.span10, textarea.span10, .uneditable-input.span10 {
+    width: 960px;
+    width: 960px;
   }
-  .offset1 {
-    margin-left: 100px;
-    margin-left: 100px;
+  input.span11, textarea.span11, .uneditable-input.span11 {
+    width: 1060px;
+    width: 1060px;
   }
-  .offset2 {
-    margin-left: 180px;
-    margin-left: 180px;
-  }
-  .offset3 {
-    margin-left: 260px;
-    margin-left: 260px;
-  }
-  .offset4 {
-    margin-left: 340px;
-    margin-left: 340px;
-  }
-  .offset5 {
-    margin-left: 420px;
-    margin-left: 420px;
-  }
-  .offset6 {
-    margin-left: 500px;
-    margin-left: 500px;
-  }
-  .offset7 {
-    margin-left: 580px;
-    margin-left: 580px;
-  }
-  .offset8 {
-    margin-left: 660px;
-    margin-left: 660px;
-  }
-  .offset9 {
-    margin-left: 740px;
-    margin-left: 740px;
-  }
-  .offset10 {
-    margin-left: 820px;
-    margin-left: 820px;
-  }
-  .offset11 {
-    margin-left: 900px;
-    margin-left: 900px;
+  input.span12, textarea.span12, .uneditable-input.span12 {
+    width: 1160px;
+    width: 1160px;
   }
   .thumbnails {
     margin-left: -30px;
@@ -6181,7 +6043,7 @@ a.thumbnail:hover {
   background-image: url(/bootstrap/img/glyphicons-halflings-white.png);
 }
 body {
-  background: url(/img/shadow_up.png) no-repeat top center;
+  background: url(/img/cross_scratches.png) repeat top center;
 }
 .navbar .nav > li > a {
   margin: 0;
@@ -6236,6 +6098,9 @@ body {
 
   box-shadow: none;
   background: none;
+  background: rgba(0, 0, 0, 0.03);
+  box-shadow: 0 1px 0 #fff;
+  box-shadow: inset 0 5px 5px #dedede;
 }
 .shadow {
   height: 204px;
@@ -6276,11 +6141,9 @@ body {
   -moz-box-shadow: inset 0 3px 5px rgba(0, 0, 0, 0.05);
   box-shadow: inset 0 3px 5px rgba(0, 0, 0, 0.05);
 }
-/* Override some defaults */
-.fixed-layout .container > footer p {
+footer p {
   text-align: center;
-  /* center align it with the container */
-
+  clear: both;
 }
 /* The white background content wrapper */
 .body-content {
@@ -6390,4 +6253,120 @@ form label.error {
 .modal-wish {
   margin: -100px 0 0 0 !important;
   width: inherit !important;
+}
+.sidebar-nav {
+  padding: 0;
+  background: #FAFAFB;
+  border: 1px solid rgba(0, 0, 0, 0.05);
+  border-radius: 4px;
+  box-shadow: inset 0 1px 1px rgba(0, 0, 0, 0.05);
+}
+.sidebar-nav .nav-list {
+  padding: 0;
+}
+.sidebar-nav li {
+  border-bottom: 1px solid #E9ECEE;
+  border-top: 1px solid #fff;
+  font-weight: bold;
+}
+.sidebar-nav li a {
+  padding: 5px 20px;
+  margin: 0;
+}
+.sidebar-nav li:hover {
+  border-top: 1px solid #FAFAFB;
+  border-bottom: 1px solid #E5E8EA;
+  background-color: #F0F0F3;
+}
+.wishes {
+  width: 960px;
+  margin: 0 auto;
+  list-style-type: none;
+  position: relative;
+}
+.wishes .span4 {
+  width: 290px;
+}
+.wishes .wish-item {
+  width: 250px;
+  border-radius: 10px 10px 10px 10px;
+  float: left;
+  padding: 10px;
+  text-align: center;
+  background: #fff;
+  position: relative;
+  margin: 20px;
+  box-shadow: 0px 0px 6px #6fa1d9;
+}
+.wishes .wish-item:after {
+  content: "";
+  position: absolute;
+  width: 15px;
+  height: 15px;
+  border-radius: 15px;
+  right: -7px;
+  bottom: -6px;
+  background: #fff;
+  box-shadow: 0px 0px 6px #6fa1d9;
+  z-index: 1;
+}
+.wishes .wish-item:before {
+  content: "";
+  position: absolute;
+  width: 7px;
+  height: 7px;
+  border-radius: 15px;
+  right: -11px;
+  bottom: -10px;
+  background: #fff;
+  box-shadow: 0px 0px 6px #6fa1d9;
+  z-index: 2;
+}
+.wishes .wish-item blockquote {
+  margin: 0;
+  padding: 0;
+  border: none;
+}
+/*______________________________________________________________Reusable*/
+.horizontal-rule {
+  border-bottom: 1px solid #FFFFFF;
+  border-top: 1px solid #DDDDDD;
+  height: 0;
+  margin: 0;
+  position: relative;
+  z-index: -99;
+}
+.horizontal-rule .first {
+  background: -webkit-radial-gradient(right bottom, rgba(0, 0, 0, 0.06), transparent 80px) repeat scroll 0 0 transparent;
+  left: 0;
+  width: 80px;
+}
+.horizontal-rule span {
+  border: medium none;
+  display: block;
+  height: 80px;
+  margin: 0;
+  padding: 0;
+  position: absolute;
+  top: -80px;
+  z-index: -100;
+}
+.horizontal-rule .second {
+  background: -webkit-radial-gradient(left bottom, rgba(0, 0, 0, 0.06), transparent 80px) repeat scroll 0 0 transparent;
+  right: 0;
+  width: 80px;
+}
+.horizontal-rule .third {
+  background: -webkit-linear-gradient(bottom, rgba(0, 0, 0, 0.06), transparent 80px);
+  margin-left: 80px;
+  margin-right: 80px;
+  position: relative;
+  top: -80px;
+}
+.reply {
+  background: url(/img/reply.png) no-repeat top left;
+  background-color: black;
+  width: 21px;
+  height: 18px;
+  display: block;
 }

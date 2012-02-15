@@ -26,9 +26,10 @@ require([
   'order!libs/utilities',   
   'order!underscore',       
   'order!backbone',         
-  'libs/jade/jade',        
-  'bootstrap/js/bootstrap-dropdown.js',
+  'order!libs/backbone.validation',
+  'order!libs/jade/jade',        
+  'order!bootstrap/js/bootstrap-dropdown.js',
   'order!app'             
-], function(a, b, c, d, e, f, App){
+], function(a, b, c, d, e, f, g, App){
   App.initialize();
 });

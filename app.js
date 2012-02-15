@@ -48,18 +48,11 @@ app.configure('production', function(){
 });
 
 
-function loadUser(req, res, next) {
+function restrict(req, res, next) {
   if (req.session.user) {
-    User.findById(req.session.user_id, function(user) {
-      if (user) {
-        req.currentUser = user;
-        next();
-      } else {
-        res.redirect('/sessions/new');
-      }
-    });
+    next();
   } else {
-    res.redirect('/sessions/new');
+    res.redirect('/login');
   }
 }
 
@@ -69,8 +62,12 @@ app.all('*',function(req,res,next){
 });
 
 function isXhr(req, res, next) {
-  if (!(req.xhr))
-    res.render('layout');
+  if (!(req.xhr)) {
+    if (req.session.user)
+      res.render('layout', { username: req.session.user.username});
+    else 
+      res.render('layout');
+  }
   else
     next()
 }
@@ -99,7 +96,16 @@ function isValidSimple(req, res, next) {
 
 templates = __dirname + '/public/templates';
 
-app.get('/', isXhr, site.index);
+app.get('/', isXhr, function(req, res) {
+  //TODO whats going on here?
+  if (req.session.user) {
+
+  }
+  res.partial('index', function(err, html){
+    res.send({title: 'Ruby Rate', body: html});
+  });
+
+});
 
 
 app.get('/signup', isXhr, function(req, res) {
@@ -119,6 +125,7 @@ app.post('/signup',
 );
 
 
+
 app.get("/is-username-valid", 
     form(validate("username").required().isAlphanumeric().minLength(2).maxLength(60))
   , isValidSimple 
@@ -134,7 +141,7 @@ app.get("/check-email",
 
 app.get("/user", function(req, res) {
   return req.session.user 
-    ? res.send({username: req.session.user.username}) 
+    ? res.send({success: true, msg: 'user is logged in', data: {username: req.session.user.username}}) 
     : res.send({success: false, msg: 'users is not logged in' })
 });
 
@@ -213,28 +220,54 @@ app.post('/sessions', function(req, res) {
   }); 
 });
 
-app.post('/wishes', function(req, res) {
+app.post('/wishes', restrict, function(req, res) {
    requirejs(['libs/underscore/underscore', 'libs/backbone/backbone', 'models/wish', 'libs/backbone.validation'],
     function (a, b , Wish) {
       _.extend(Backbone.Validation.callbacks, {
         valid: function(view, attr, selector) {},
         invalid: function(view, attr, error, selector) {}
       });
-
       var wish = new Wish(req.body)
       var view = new Backbone.View.extend()
       view.model = wish
       Backbone.Validation.bind(view);
 
       if (wish.isValid(true)) {   
-        db.collection('wishes').insert(model.toJSON(), function(err, id){
-          
+        req.body['username'] = req.session.user.username 
+        req.body['user_id'] = req.session.user._id 
+        db.collection('wishes').insert(wish.toJSON(), function(err, id){
+          res.send({success: true, message: 'wish inserted'})
+        })
       }
       else {
         console.log('bad stuff') 
       }
   });
 });
+
+
+app.get('/wishes', restrict, function(req, res) {
+  var username = req.session.user.username
+  db.collection('wishes').find({username: username }).toArray(function(err, result) {
+      if (err) throw err;
+      res.send(result)
+  })
+})
+
+app.get('/fulfill-wishes', isXhr, function(req, res) {
+  db.collection('wishes').find().toArray(function(err, result) {
+      if (err) throw err;
+      res.send(result)
+  })
+})
+
+app.get('/wishes/:id', function(req, res) {
+  db.collection('wishes').findById(req.params.id, function(err, result) {
+      if (err) throw err;
+      res.send(result)
+  })
+})
+
 
 
 app.listen(3000);

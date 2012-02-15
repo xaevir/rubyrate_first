@@ -1,9 +1,12 @@
 !!! 5
 html(lang='en')
+  - if(typeof username !== "undefined")
+    script
+      window.username = !{JSON.stringify(username)}
   include header
-  body.fixed-layout
+  body
     include nav
-    .container
+    .container-fluid
       #app
       footer
         p &copy; Ruby Rate 2012

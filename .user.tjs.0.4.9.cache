@@ -116,7 +116,7 @@ var __tame_fn_0 = function (__tame_k) {
     ;
     
     
-    exports . check_username =
+    exports . is_username_valid =
     function  (req, res) {
         var __tame_defer_cb = tame.findDeferCb ([req, res]);
         tame.setActiveCb (__tame_defer_cb);
@@ -217,101 +217,110 @@ var __tame_fn_0 = function (__tame_k) {
         var __tame_defer_cb = tame.findDeferCb ([req, res]);
         tame.setActiveCb (__tame_defer_cb);
         var __tame_this = this;
-        var __tame_fn_19 = function (__tame_k) {
+        var __tame_fn_29 = function (__tame_k) {
             tame.setActiveCb (__tame_defer_cb);
-            var err, user;
-            var __tame_fn_20 = function (__tame_k) {
+            var fail_res = { success : false , message : 'user login unsuccessful' } ;
+            var __tame_fn_19 = function (__tame_k) {
                 tame.setActiveCb (__tame_defer_cb);
-                var __tame_defers = new tame.Deferrals (__tame_k);
-                var __tame_fn_21 = function (__tame_k) {
+                var err, user;
+                var __tame_fn_20 = function (__tame_k) {
                     tame.setActiveCb (__tame_defer_cb);
-                    db . collection ( 'users' ) . findOne ( { email : req . form . email } ,
-                    __tame_defers.defer ( { 
-                        assign_fn : 
-                            function () {
-                                err = arguments[0];
-                                user = arguments[1];
-                            }
-                            ,
-                        parent_cb : __tame_defer_cb,
-                        line : 30,
-                        file : "/home/bobby/apps/rubyrate/user.tjs"
-                    } )
-                    ) ;
+                    var __tame_defers = new tame.Deferrals (__tame_k);
+                    var __tame_fn_21 = function (__tame_k) {
+                        tame.setActiveCb (__tame_defer_cb);
+                        db . collection ( 'users' ) . findOne ( { email : req . form . email } ,
+                        __tame_defers.defer ( { 
+                            assign_fn : 
+                                function () {
+                                    err = arguments[0];
+                                    user = arguments[1];
+                                }
+                                ,
+                            parent_cb : __tame_defer_cb,
+                            line : 31,
+                            file : "/home/bobby/apps/rubyrate/user.tjs"
+                        } )
+                        ) ;
+                        tame.callChain([__tame_k]);
+                        tame.setActiveCb (null);
+                    };
+                    __tame_fn_21(tame.end);
+                    __tame_defers._fulfill();
+                    tame.setActiveCb (null);
+                };
+                var __tame_fn_22 = function (__tame_k) {
+                    tame.setActiveCb (__tame_defer_cb);
+                    var __tame_fn_23 = function (__tame_k) {
+                        tame.setActiveCb (__tame_defer_cb);
+                            res . send ( fail_res );
+                            tame.callChain([tame.end, __tame_k]);
+                        tame.setActiveCb (null);
+                    };
+                    if (! user) {
+                        tame.callChain([__tame_fn_23, __tame_k]);
+                    } else {
+                        tame.callChain([__tame_k]);
+                    }
+                    tame.setActiveCb (null);
+                };
+                var err, match;
+                var __tame_fn_24 = function (__tame_k) {
+                    tame.setActiveCb (__tame_defer_cb);
+                    var __tame_defers = new tame.Deferrals (__tame_k);
+                    var __tame_fn_25 = function (__tame_k) {
+                        tame.setActiveCb (__tame_defer_cb);
+                        bcrypt . compare ( req . form . password , user . password ,
+                        __tame_defers.defer ( { 
+                            assign_fn : 
+                                function () {
+                                    err = arguments[0];
+                                    match = arguments[1];
+                                }
+                                ,
+                            parent_cb : __tame_defer_cb,
+                            line : 33,
+                            file : "/home/bobby/apps/rubyrate/user.tjs"
+                        } )
+                        ) ;
+                        tame.callChain([__tame_k]);
+                        tame.setActiveCb (null);
+                    };
+                    __tame_fn_25(tame.end);
+                    __tame_defers._fulfill();
+                    tame.setActiveCb (null);
+                };
+                var __tame_fn_26 = function (__tame_k) {
+                    tame.setActiveCb (__tame_defer_cb);
+                    var __tame_fn_27 = function (__tame_k) {
+                        tame.setActiveCb (__tame_defer_cb);
+                            res . send ( fail_res );
+                            tame.callChain([tame.end, __tame_k]);
+                        tame.setActiveCb (null);
+                    };
+                    if (! match) {
+                        tame.callChain([__tame_fn_27, __tame_k]);
+                    } else {
+                        tame.callChain([__tame_k]);
+                    }
+                    tame.setActiveCb (null);
+                };
+                var __tame_fn_28 = function (__tame_k) {
+                    tame.setActiveCb (__tame_defer_cb);
+                    req . session . user = user ;
+                    res . send ( { success : true ,
+                    message : 'user successfully logged in' ,
+                    data : { username : user . username }
+                    } ) ;
                     tame.callChain([__tame_k]);
                     tame.setActiveCb (null);
                 };
-                __tame_fn_21(tame.end);
-                __tame_defers._fulfill();
+                tame.callChain([__tame_fn_20, __tame_fn_22, __tame_fn_24, __tame_fn_26, __tame_fn_28, __tame_k]);
                 tame.setActiveCb (null);
             };
-            var __tame_fn_22 = function (__tame_k) {
-                tame.setActiveCb (__tame_defer_cb);
-                var __tame_fn_23 = function (__tame_k) {
-                    tame.setActiveCb (__tame_defer_cb);
-                        res . send ( false );
-                        tame.callChain([tame.end, __tame_k]);
-                    tame.setActiveCb (null);
-                };
-                if (! user) {
-                    tame.callChain([__tame_fn_23, __tame_k]);
-                } else {
-                    tame.callChain([__tame_k]);
-                }
-                tame.setActiveCb (null);
-            };
-            var err, match;
-            var __tame_fn_24 = function (__tame_k) {
-                tame.setActiveCb (__tame_defer_cb);
-                var __tame_defers = new tame.Deferrals (__tame_k);
-                var __tame_fn_25 = function (__tame_k) {
-                    tame.setActiveCb (__tame_defer_cb);
-                    bcrypt . compare ( req . form . password , user . password ,
-                    __tame_defers.defer ( { 
-                        assign_fn : 
-                            function () {
-                                err = arguments[0];
-                                match = arguments[1];
-                            }
-                            ,
-                        parent_cb : __tame_defer_cb,
-                        line : 32,
-                        file : "/home/bobby/apps/rubyrate/user.tjs"
-                    } )
-                    ) ;
-                    tame.callChain([__tame_k]);
-                    tame.setActiveCb (null);
-                };
-                __tame_fn_25(tame.end);
-                __tame_defers._fulfill();
-                tame.setActiveCb (null);
-            };
-            var __tame_fn_26 = function (__tame_k) {
-                tame.setActiveCb (__tame_defer_cb);
-                var __tame_fn_27 = function (__tame_k) {
-                    tame.setActiveCb (__tame_defer_cb);
-                        res . send ( false );
-                        tame.callChain([tame.end, __tame_k]);
-                    tame.setActiveCb (null);
-                };
-                if (! match) {
-                    tame.callChain([__tame_fn_27, __tame_k]);
-                } else {
-                    tame.callChain([__tame_k]);
-                }
-                tame.setActiveCb (null);
-            };
-            var __tame_fn_28 = function (__tame_k) {
-                tame.setActiveCb (__tame_defer_cb);
-                req . session . user = user ;
-                res . send ( true ) ;
-                tame.callChain([__tame_k]);
-                tame.setActiveCb (null);
-            };
-            tame.callChain([__tame_fn_20, __tame_fn_22, __tame_fn_24, __tame_fn_26, __tame_fn_28, __tame_k]);
+            tame.callChain([__tame_fn_19, __tame_k]);
             tame.setActiveCb (null);
         };
-        tame.callChain([__tame_fn_19, __tame_k]);
+        tame.callChain([__tame_fn_29, __tame_k]);
         tame.setActiveCb (null);
     }
     ;

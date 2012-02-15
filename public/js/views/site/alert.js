@@ -5,7 +5,7 @@ define([
 
   var AlertView = Backbone.View.extend({
 
-    el: '#app',
+    el: 'body',
   
     template: hogan.compile('\
       <div class="alert alert-{{type}}">\

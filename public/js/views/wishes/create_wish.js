@@ -54,7 +54,8 @@ function (AlertView, tpl, Wish) {
       this.button = $('button[type="submit"]', this.el);
     },
 
-    submit: function (form) {
+    submit: function (e) {
+      e.preventDefault()
       this.model.save();
       $('.modal-backdrop').remove();
       $('.modal').remove();

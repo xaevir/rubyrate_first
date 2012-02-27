@@ -43,7 +43,8 @@ var ListView = Backbone.View.extend({
 
   addOne: function(model, index) {
     var body = model.get('body')
-    var $el = $('<li>' + body + '</li>' )
+
+    var $el = $('<li data-author="this.m">' + body + '</li>' )
     if (!(this.counter % 2))
       $el.addClass('even')
     $(this.el).append($el)

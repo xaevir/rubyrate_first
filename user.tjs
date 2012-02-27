@@ -6,7 +6,8 @@ exports.signup = function(req, res){
   req.body.password = hash;
   await db.collection('users').insert(req.body, defer(var err, user));
   req.session.user = user;
-  res.send({success: true, msg: 'signup successful' }); 
+  user.password = '';
+  res.send(user);
 };
 
 

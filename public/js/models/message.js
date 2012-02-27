@@ -1,12 +1,16 @@
-define([
-  'jquery',     
-  'underscore', 
-  'backbone'    
-], function($, _, Backbone){
+define(function(require) {
 
   var Message = Backbone.Model.extend({
-  });
 
-  return Message;
+    idAttribute: "_id",
 
-});
+    validation: {
+      author:    {required: true},
+      body:      {required: true, maxLength: 140},
+      recipient: {required: true}
+    }
+  })
+
+  return Message
+
+})

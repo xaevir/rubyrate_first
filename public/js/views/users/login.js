@@ -1,72 +1,83 @@
-define([
-  'text!templates/users/login.jade',
-  'views/site/alert',
-  'libs/jade/jade',
-  'libs/jquery-validation/jquery.validate',
-], function(tpl, AlertView){
+define(function(require) {
 
-  var Model = Backbone.Model.extend({ 
-    url: '/login',
-    
-    rules: {
-      email: {
-        required: true
-      },
-      password: {
-        required: true
+var tpl = require('text!templates/users/login.jade')
+  , Session = require('models/session') 
+  , AlertView = require('views/site/alert')         
+
+var LoginView = Backbone.View.extend({
+
+  template: jade.compile(tpl),
+
+  events: {
+    'submit form' : 'submit'
+  },
+
+  initialize: function(options){
+    _.bindAll(this); 
+    this.model = new Session();
+    Backbone.Validation.bind(this);
+    this.model.bind('validated:valid', this.post, this) 
+    if (options.context == 'main')
+      $(this.el).addClass('span3 offset4 body-content-small')
+    if (options.passThru)          
+      this.passThru = options.passThru
+  },
+
+  render: function(){
+    var template = this.template();
+    $(this.el).html(template);
+    return this; 
+  },
+
+  submit: function(e) {
+    e.preventDefault()
+    var params = this.$('form').serializeObject();
+    this.model.set(params)
+  },
+
+  post: function(model){
+   var that = this
+   $.post('/session', model.toJSON(), function(data){
+      if (data._id) {
+      window.user.set(data)
+      that.close()
+      if (!this.passThru) {
+        var router = new Backbone.Router()
+        router.navigate('', true);
       }
+    } 
+    else {
+      that.renderErrorAlert()
     }
-  });
+   }) 
+  },
 
-  var LoginView = Backbone.View.extend({
+  renderErrorAlert: function(){
+    if (this.happened) return  
+    this.happened = true 
+    this.errorAlert = new AlertView({
+      message: '<strong>Heads Up!</strong> Please check your email or password',
+      type: 'error'
+    }) 
+  },
 
-    template: jade.compile(tpl),
+  close: function(){
+    this.remove()
+    if (this.errorAlert)
+      this.errorAlert.remove()
+    this.alertIntoNextView() 
+  },
 
-    events: {
-      //'submit form' : 'submit'
-    },
+  alertIntoNextView: function(){
+    var successAlert = new AlertView({
+      message: '<strong>Hello</strong>',
+      type: 'info'
+    })
+    successAlert.fadeOut()
+  }
 
-    alreadyAlerted: false,
+});
 
-    initialize: function(options){
-        _.bindAll(this, 'render', 'submitHandler', 'ajax_success'); 
-        this.model = new Model;
-        this.user = options.user;
-    },
-
-    render: function(){
-        var template = this.template();
-        $(this.el).html(template);
-        // validate
-        var form = $('form', this.el); 
-        $(form).validate({
-            rules: this.model.rules,
-            submitHandler: this.submitHandler, 
-        });
-        return this; 
-    },
-
-    submitHandler: function() {
-      var params = $('form', this.el).serializeObject();
-      $.post('/login', params,  this.ajax_success) 
-    },
-
-    ajax_success: function(res){
-      if (res.success === true) {
-        this.user.set({username: res.data.username});
-        var router = new Backbone.Router();
-        router.navigate('/', true);
-        return
-      } 
-      if (this.alreadyAlerted) return; 
-      var alert_view = new AlertView();
-      alert_view.message = '<strong>Heads Up!</strong> Please check your email or password';
-      alert_view.type = 'error';
-      alert_view.render();
-      this.alreadyAlerted = true; 
-    }
-  });
-  
   return LoginView;
 
 });

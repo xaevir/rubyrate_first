@@ -64,9 +64,9 @@ app.all('*',function(req,res,next){
 function isXhr(req, res, next) {
   if (!(req.xhr)) {
     if (req.session.user)
-      res.render('layout', { username: req.session.user.username});
+      res.render('layout', { user: {username: req.session.user.username, _id:  req.session.user._id}});
     else 
-      res.render('layout');
+      res.render('layout', {user: {}});
   }
   else
     next()
@@ -103,7 +103,7 @@ app.get('/', isXhr, function(req, res) {
   }
   res.partial('index', function(err, html){
     res.send({title: 'Ruby Rate', body: html});
-  });
+ ot  });
 
 });
 
@@ -114,16 +114,21 @@ app.get('/signup', isXhr, function(req, res) {
   });
 });
 
-app.post('/signup', 
-    form(
-      validate("username").required().isAlphanumeric().minLength(2).maxLength(60)
-    , validate("password").required().minLength(6)
-    , validate("email").required().isEmail()
-    )
-  , isValid
-  , user.signup
-);
+bcrypt = require('bcrypt')
 
+app.post('/signup', function(req, res){ 
+  bcrypt.genSalt(10, function(err, salt){
+    bcrypt.hash(req.body.password, salt, function(err, hash){
+      req.body.password = hash;
+      db.collection('users').insert(req.body, function(err, result){
+        var user = result[0]
+        req.session.user = user;
+        user.password = '';
+        res.send(user);
+      })
+    })
+  }) 
+})
 
 
 app.get("/is-username-valid", 
@@ -138,13 +143,13 @@ app.get("/check-email",
   , isValid 
   , user.check_email
 );
-
+/*
 app.get("/user", function(req, res) {
   return req.session.user 
     ? res.send({success: true, msg: 'user is logged in', data: {username: req.session.user.username}}) 
     : res.send({success: false, msg: 'users is not logged in' })
 });
-
+*/
 
 app.get('/login', isXhr, function(req, res) {
   res.partial(templates + '/users/login.jade', function(err, html){
@@ -183,32 +188,30 @@ app.post('/login_test', function(req, res) {
 
 })
 
-app.post('/login', function(req, res) {
-  var fail_res = {success: false, message: 'user login unsuccessful'};
+app.post('/session', function(req, res) {
   db.collection('users').findOne({email: req.body.email}, function(err, user){
-    if (!user) {  
-      return res.send(fail_res);
-    }
+    if (!user)   
+      return res.send({});
     bcrypt.compare(req.body.password, user.password, function(err, match) {
-      if (!match) {
-        return res.send(fail_res)
-      }
+      if (!match) 
+        return res.send({})
       req.session.user = user;
-      res.send({success: true, 
-                message: 'user successfully logged in',
-                data: {username: user.username}
-      })
+      user.password = '';
+      res.send(user)
     })
   })
 })
 
-app.get('/logout', function(req, res) {
+
+app.del('/session', function(req, res) {
   req.session.destroy(function(){
-    res.redirect('home');
+      res.send({success: true, 
+                message: 'user logged out'
+      })
   });
 });
-
-app.post('/sessions', function(req, res) {
+/*
+app.post('/session', function(req, res) {
   User.find({ email: req.body.user.email }).first(function(user) {
     if (user && user.authenticate(req.body.user.password)) {
       req.session.user_id = user.id;
@@ -219,7 +222,7 @@ app.post('/sessions', function(req, res) {
     }
   }); 
 });
-
+*/
 app.post('/wishes', restrict, function(req, res) {
    requirejs(['libs/underscore/underscore', 'libs/backbone/backbone', 'models/wish', 'libs/backbone.validation'],
     function (a, b , Wish) {
@@ -233,41 +236,43 @@ app.post('/wishes', restrict, function(req, res) {
       Backbone.Validation.bind(view);
 
       if (wish.isValid(true)) {   
-        req.body['username'] = req.session.user.username 
-        req.body['user_id'] = req.session.user._id 
-        db.collection('wishes').insert(wish.toJSON(), function(err, id){
+        db.collection('messages').insert(wish.toJSON(), function(err, id){
           res.send({success: true, message: 'wish inserted'})
         })
       }
       else {
-        console.log('bad stuff') 
+        console.log('bad stuff')
       }
   });
 });
 
-
-app.get('/wishes', restrict, function(req, res) {
+app.get('/conversations', restrict, function(req, res) {
   var username = req.session.user.username
-  db.collection('wishes').find({username: username }).toArray(function(err, result) {
+  db.collection('messages').find({'author.username': username, ancestors: {$exists: false} }).toArray(function(err, result) {
       if (err) throw err;
       res.send(result)
   })
 })
 
-app.get('/fulfill-wishes', isXhr, function(req, res) {
-  db.collection('wishes').find().toArray(function(err, result) {
+app.get('/be-genie', isXhr, function(req, res) {
+  db.collection('messages').find({recipient: {$exists: false}}).toArray(function(err, result) {
       if (err) throw err;
       res.send(result)
   })
 })
 
-app.get('/wishes/:id', function(req, res) {
-  db.collection('wishes').findById(req.params.id, function(err, result) {
+app.get('/conversations/:id', function(req, res) {
+  db.collection('messages').find({ancestors: req.params.id}, function(err, result) {
       if (err) throw err;
       res.send(result)
   })
 })
 
+app.post('/messages', restrict, function(req, res) {
+  db.collection('messages').insert(req.body, function(err, id){
+    res.send({success: true, message: 'message inserted'})
+  })
+})
 
 
 app.listen(3000);

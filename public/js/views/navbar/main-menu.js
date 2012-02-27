@@ -17,8 +17,8 @@ return Backbone.View.extend({
   },
 
   render: function() {
-    var user = window.user.isAuthorized() 
-    var template = this.template({user: user});
+    var loggedIn = window.user.isLoggedIn() 
+    var template = this.template({user: loggedIn});
     $(this.el).html(template)
     return this
   },

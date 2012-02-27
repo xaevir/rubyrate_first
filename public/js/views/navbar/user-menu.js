@@ -9,9 +9,13 @@ return Backbone.View.extend({
   template: hogan.compile(userMenuTpl),
 
   events: {
-    'click a[href="/logout"]': 'logout'
+    'click a[href="#logout"]': 'logout'
   },
 
+  logout: function(){
+    window.dispatcher.trigger('session:logout') 
+    console.log('user-menu.logout.trigger->session:logout')
+  },
 
   initialize: function(options){
     _.bindAll(this, 'render'); 
@@ -20,7 +24,7 @@ return Backbone.View.extend({
 
   render: function(user) {
     var template;
-    if (window.user.isAuthorized()) {
+    if (window.user.isLoggedIn()) {
       template = this.template.render({user: {name: window.user.get('username') }})
     } else {
       template = this.template.render({user: false});
@@ -29,14 +33,6 @@ return Backbone.View.extend({
     $(this.el).html(template)
     return this;
   },
-
-  logout: function() {
-    window.user.clear(); 
-    window.user.id = ''; 
-    var router = new Backbone.Router();
-    router.navigate('', true)
-  }
-
 })
 
 });  

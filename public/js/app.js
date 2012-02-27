@@ -1,22 +1,30 @@
 define(function(require) {
 
 var Router = require('router')
-  , NavBar = require('views/navBar')         
-  , BodyView = require('views/site/body') 
+  , User = require('models/user')
+  , NavBar = require('views/navbar/navbar')         
+  , Alerts = require('collections/alerts')         
+  , AlertView = require('views/site/alert')         
+  , Session = require('models/session') 
 
   var initialize = function(){
+     
+    //window.alerts = new Alerts() 
+    //window.alertView = new AlertView()     
 
-    var user = new (Backbone.Model.extend({url: '/user'}))()
-    var bodyView = new BodyView();
+    window.dispatcher = _.clone(Backbone.Events)
 
-    NavBar.initialize(user);
+    window.user = new User()
+    if (window.config.user)  
+      window.user.set(window.config.user)
+   
+    var navBar = new NavBar()
+    navBar.render()
 
-    if (window.username)
-      user.set({'username': window.username})
 
-    //setting this last bc I am not using an event to render it
-    Router.initialize(user);
-
+    var router = new Router()
+    router.session = new Session()
+    Backbone.history.start({pushState: true});
   }
 
   return {

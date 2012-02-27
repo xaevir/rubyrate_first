@@ -1,10 +1,11 @@
 !!! 5
 html(lang='en')
-  - if(typeof username !== "undefined")
+  - if(typeof user !== "undefined")
     script
-      window.username = !{JSON.stringify(username)}
+      window.config = {user: !{JSON.stringify(user)}} 
   include header
   body
+    .brand Rubyrate 
     include nav
     .container-fluid
       #app

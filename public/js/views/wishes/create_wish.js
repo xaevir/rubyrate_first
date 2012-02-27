@@ -1,10 +1,8 @@
-define(['views/site/alert', 
-        'text!templates/wishes/create_wish.jade', 
-        'models/wish',
-        'order!/bootstrap/js/bootstrap-modal.js', 
-        'order!libs/backbone.validation'
-        ], 
-function (AlertView, tpl, Wish) {
+define(function(require) {
+
+var AlertView = require('views/site/alert')
+  , tpl = require('text!templates/wishes/create_wish.jade') 
+  , Wish = require('models/wish')
 
   var CreateView = Backbone.View.extend({
 
@@ -23,6 +21,7 @@ function (AlertView, tpl, Wish) {
     initialize: function() {
       _.bindAll(this, 'render', 'submit');
       this.model = new Wish();
+      this.model.set({author: window.user})
       Backbone.Validation.bind(this);
       this.model.bind("validated:valid", this.valid, this);
       this.model.bind("validated:invalid", this.invalid, this);

@@ -1,12 +1,13 @@
 {{#user}}
-  <li><a href="/logout" class="no-push">Logout ({{name}})</a></li> 
-{{/user}}
-{{^user}}
-  <li class="dropdown" id="signup">
-    <a href="#signup" class="dropdown-toggle" data-toggle="dropdown">Sign Up<b class="caret"></b></a>
+  <li class="dropdown" id="user-dropdown">
+    <a href="#user-dropdown" class="dropdown-toggle" data-toggle="dropdown"><i class="icon-user"></i><b class="caret"></b></a>
     <ul class="dropdown-menu">
-    {{{signup}}}
+      <li><a href="#">{{name}} profile</a></li>
+      <li><a href="#logout">Logout</a></li> 
     </ul>
   </li>
+{{/user}}
+{{^user}}
+  <li><a href="/signup">Sign Up</a></li>
   <li><a href="/login">Login</a></li>
 {{/user}}

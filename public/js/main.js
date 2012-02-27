@@ -21,15 +21,21 @@ require.config({
  *  in order to call App, the fn has to be passed
  *  placeholder args
  */ 
-require([
-  'order!jquery',          
-  'order!libs/utilities',   
-  'order!underscore',       
-  'order!backbone',         
-  'order!libs/backbone.validation',
-  'order!libs/jade/jade',        
-  'order!bootstrap/js/bootstrap-dropdown.js',
-  'order!app'             
-], function(a, b, c, d, e, f, g, App){
+define(function(require) {
+
+  require('order!jquery')
+  require('order!libs/utilities')
+  require('order!underscore')
+  require('order!backbone')
+  require('order!libs/backbone.validation/backbone.validation')
+  require('order!libs/jade/jade')
+  require('order!bootstrap/js/bootstrap-dropdown.js')
+  require('order!bootstrap/js/bootstrap-modal.js')
+  require('order!bootstrap/js/bootstrap-tab.js')
+  require('order!bootstrap/js/bootstrap-alert.js')
+  
+  var App = require('order!app')
+
   App.initialize();
+
 });

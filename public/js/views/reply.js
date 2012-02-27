@@ -1,36 +1,58 @@
 define(function(require) {
 
 var tpl = require('text!templates/reply.jade')
-  , Reply = require('models/reply') 
-  , AlertView = require('views/site/alert')
+  , Message = require('models/message') 
 
 var ReplyView = Backbone.View.extend({
 
-  className: 'reply-form',
+  className: 'reply-unit',
 
   template: jade.compile(tpl),
 
   events: {
     'keyup :input': 'setAttr',
+    'paste :input':  'onPaste',
     'submit form' : 'submit'
+  },
+
+  onPaste: function(el){
+    var setAttr = this.setAttr
+    setTimeout(function(){setAttr(el)}, 100)
   },
 
   button: '',
 
-  initialize: function() {
-    _.bindAll(this, 'render', 'submit', 'reset');
-    this.reply_to = this.options.reply_to
-    this.model = new Reply();
-    this.model.set({ancestors: this.reply_to.get('_id')})
-    this.model.set({recipient: this.reply_to.get('author')})
+  initialize: function(options) {
+    _.bindAll(this, 'render', 'submit', 'setAttr', 'reset');
+    this.set_model(options.replying_to, options.user)
     Backbone.Validation.bind(this);
-    this.model.bind("validated:valid", this.valid, this);
-    this.model.bind("validated:invalid", this.invalid, this);
-    this.model.on('add', this.reset, this)
+    this.model.on("validated:valid", this.valid, this);
+    this.model.on("validated:invalid", this.invalid, this);
+  },
+
+  set_model: function(replying_to, user){
+    this.model = new Message();
+    var author = {  
+      _id      : user.id,
+      username : user.get('username')
+    }
+    var attrs = {
+      author: author,     
+      ancestors: replying_to.get('_id'), 
+      recipient: replying_to.get('author')
+    }
+    this.model.set(attrs)
   },
 
   reset: function() {
-    this.initialize()  
+    // need this off event bc the model gets validated on set and save. 
+    // the save fucntion tied to the valid event is being called after everything
+    // is rerendered and ready to go. The effect is that it is removing the 
+    // disabled attribute from the button even though there is nothing in the textarea
+    // It is a leftover over event. 
+    this.model.off()
+    this.set_model(this.options.replying_to, this.options.user)
+    this.render()
   },
 
   setAttr: function(e) {
@@ -65,17 +87,16 @@ var ReplyView = Backbone.View.extend({
 
   submit: function (e) {
     e.preventDefault()
-    this.model.save();
-    this.collection.add(this.model)
+    var reset = this.reset
+    this.collection.create(this.model, {success: function(model, res){
+      reset()   
+    }})
     var alert_view = new AlertView();
-    alert_view.message = 'Reply sent';
+    alert_view.message = 'Message sent';
     alert_view.type = 'success';
     alert_view.timer = true;
     alert_view.render();
   }
-
-
-
 })
 
 return ReplyView

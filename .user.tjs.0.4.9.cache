@@ -97,7 +97,8 @@ var __tame_fn_0 = function (__tame_k) {
                     var __tame_fn_9 = function (__tame_k) {
                         tame.setActiveCb (__tame_defer_cb);
                         req . session . user = user ;
-                        res . send ( { success : true , msg : 'signup successful' } ) ;
+                        user . password = '' ;
+                        res . send ( user ) ;
                         tame.callChain([__tame_k]);
                         tame.setActiveCb (null);
                     };
@@ -138,7 +139,7 @@ var __tame_fn_0 = function (__tame_k) {
                             }
                             ,
                         parent_cb : __tame_defer_cb,
-                        line : 14,
+                        line : 15,
                         file : "/home/bobby/apps/rubyrate/user.tjs"
                     } )
                     ) ;
@@ -186,7 +187,7 @@ var __tame_fn_0 = function (__tame_k) {
                             }
                             ,
                         parent_cb : __tame_defer_cb,
-                        line : 22,
+                        line : 23,
                         file : "/home/bobby/apps/rubyrate/user.tjs"
                     } )
                     ) ;
@@ -237,7 +238,7 @@ var __tame_fn_0 = function (__tame_k) {
                                 }
                                 ,
                             parent_cb : __tame_defer_cb,
-                            line : 31,
+                            line : 32,
                             file : "/home/bobby/apps/rubyrate/user.tjs"
                         } )
                         ) ;
@@ -278,7 +279,7 @@ var __tame_fn_0 = function (__tame_k) {
                                 }
                                 ,
                             parent_cb : __tame_defer_cb,
-                            line : 33,
+                            line : 34,
                             file : "/home/bobby/apps/rubyrate/user.tjs"
                         } )
                         ) ;

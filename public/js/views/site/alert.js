@@ -1,46 +1,49 @@
-define([
-  'libs/hogan.js/web/builds/1.0.5/hogan-1.0.5.min.amd',
-  '/bootstrap/js/bootstrap-alert.js'
-], function(hogan){
+define(function(require) {
 
-  var AlertView = Backbone.View.extend({
+var hogan  = require('libs/hogan.js/web/builds/1.0.5/hogan-1.0.5.min.amd')
+  , Alert  = require('models/alert')
 
-    el: 'body',
-  
-    template: hogan.compile('\
-      <div class="alert alert-{{type}}">\
-        {{{message}}}\
-       </div>'),
+var AlertView = Backbone.View.extend({
+
+  className: 'alert',
+
+  //template: hogan.compile('<div class="alert alert-{{type}}"> {{{message}}} </div>'),
+
+  events: { /* twitter bootstrap handles these*/ },
+
+  initialize: function(options){
+    _.bindAll(this, 'fadeOut', 'render') 
+    this.message = options.message
+    this.type = options.type
+    //this.collection.on('add', this.render, this)
+    this.render() 
+  },
+
+  addClassName: function(type){
+    $(this.el).addClass('alert-' + type)
+  },
+
+  render: function(){
+    $(this.el).html(this.message)
+    this.addClassName(this.type)
+    $('body').prepend(this.el)
+    $(this.el).center()
+    return this
+  },
+
+  fadeOut: function(){
+   var that = this
+   var t = setTimeout(function(){
+    $(that.el).fadeOut('slow', function() {
+      $(that.el).remove();
+     });
+    }, 3000);
+  },
+
+});
 
 
-    events: {
-      // twitter bootstrap handles these
-    },
 
-    initialize: function(options){
-        options = options || {};
-        this.message = options.message;
-        this.type = options.type;
-        this.timer = options.timer || false
-        _.bindAll(this, 'render'); 
-    },
-
-    render: function(){
-      var html = this.template.render({type: this.type, message: this.message});
-      var html  = $(html);
-      $(this.el).prepend(html);
-      html.center();
-      if(this.timer) {
-        var t = setTimeout(function(){
-          $('.alert').fadeOut('slow', function() {
-            $('.alert').remove();
-           });
-        }, 3000);
-      }
-    },
-
-  });
-  
-  return AlertView; 
+return AlertView; 
 
 });

@@ -2,6 +2,7 @@ define(function(require) {
 
 var tpl = require('text!templates/reply.jade')
   , Message = require('models/message') 
+  , AlertView = require('views/site/alert')
 
 var ReplyView = Backbone.View.extend({
 
@@ -22,26 +23,24 @@ var ReplyView = Backbone.View.extend({
 
   button: '',
 
-  initialize: function(options) {
-    _.bindAll(this, 'render', 'submit', 'setAttr', 'reset');
-    this.set_model(options.replying_to, options.user)
-    Backbone.Validation.bind(this);
-    this.model.on("validated:valid", this.valid, this);
-    this.model.on("validated:invalid", this.invalid, this);
+  modelDefaults: function(){
+    return {
+      author: {
+        _id      : window.user.id,
+        username : window.user.get('username')
+      },
+      kickoff_id: this.kickoff.get('_id'),
+    } 
   },
 
-  set_model: function(replying_to, user){
-    this.model = new Message();
-    var author = {  
-      _id      : user.id,
-      username : user.get('username')
-    }
-    var attrs = {
-      author: author,     
-      ancestors: replying_to.get('_id'), 
-      recipient: replying_to.get('author')
-    }
-    this.model.set(attrs)
+  initialize: function(options) {
+    _.bindAll(this, 'render', 'submit', 'setAttr', 'reset')
+    this.kickoff = options.kickoff
+    Message.prototype.defaults = this.modelDefaults()
+    this.model = new Message()
+    Backbone.Validation.bind(this);
+    this.model.on("validated:valid", this.valid, this)
+    this.model.on("validated:invalid", this.invalid, this);
   },
 
   reset: function() {
@@ -51,7 +50,7 @@ var ReplyView = Backbone.View.extend({
     // disabled attribute from the button even though there is nothing in the textarea
     // It is a leftover over event. 
     this.model.off()
-    this.set_model(this.options.replying_to, this.options.user)
+    this.model = new Message()
     this.render()
   },
 
@@ -81,7 +80,6 @@ var ReplyView = Backbone.View.extend({
     var t = setTimeout(function(){
       textarea.focus()
     }, 500);
-
     return this
   },
 
@@ -91,11 +89,11 @@ var ReplyView = Backbone.View.extend({
     this.collection.create(this.model, {success: function(model, res){
       reset()   
     }})
-    var alert_view = new AlertView();
-    alert_view.message = 'Message sent';
-    alert_view.type = 'success';
-    alert_view.timer = true;
-    alert_view.render();
+    var alertView = new AlertView({
+      message: 'Message sent',
+      type: 'success'     
+    })
+    alertView.fadeOut()
   }
 })
 

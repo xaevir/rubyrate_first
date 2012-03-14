@@ -3,7 +3,7 @@ define(function(require) {
 var tpl = require('text!templates/reply.jade')
   , ReplyView = require('views/reply') 
   , MessagesView = require('views/messages') 
-  , Collection = require('collections/messages')
+  , Messages = require('collections/messages')
   , RestrictedView = require('views/site/restricted')         
 
 var ChatView = Backbone.View.extend({
@@ -17,8 +17,13 @@ var ChatView = Backbone.View.extend({
   initialize: function(options) {
     _.bindAll(this, 'render', 'render_reply_form')
     this.message = options.message
-    this.collection = new Collection(options.message)
+    this.collection = new Messages(options.message)
     this.messagesView = new MessagesView({collection: this.collection})
+  },
+
+  setOtherPerson: function(){
+    var author = this.collection.pluck('author') 
+    this.otherPerson = author 
   },
 
   render: function(){
@@ -31,13 +36,12 @@ var ChatView = Backbone.View.extend({
 
   render_reply_form: function(e){
     e.preventDefault()
-    if (!window.user.get('username')) {
-      return new RestrictedView(window.user).render()  
+    if (!window.user.isLoggedIn()) {
+      return new RestrictedView().render()  
     }
     var opts = {
-      replying_to: this.message,
+      kickoff: this.collection.at(0),
       collection: this.collection, 
-      user: window.user
     }
     var replyView = new ReplyView(opts)
     var form = replyView.render().el

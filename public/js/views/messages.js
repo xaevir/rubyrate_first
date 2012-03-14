@@ -1,14 +1,12 @@
 define(function(require) {
 
-//var hogan = require('libs/hogan.js/web/builds/1.0.5/hogan-1.0.5.min.amd')         
+var hogan = require('libs/hogan.js/web/builds/1.0.5/hogan-1.0.5.min.amd')         
 //  , Reply = require('models/reply') 
 
 var MessageItem = Backbone.View.extend({
 
   tagName:  "li",
   className: 'message-item',
-
-  //template: hogan.compile('<blockquote>{{body}}</blockquote> <a href="#" class="reply">Reply</a> '),
 
   initialize: function() {
     _.bindAll(this, 'render');
@@ -24,40 +22,37 @@ var MessageItem = Backbone.View.extend({
 })
 
 
-var ListView = Backbone.View.extend({
+return  Backbone.View.extend({
 
   className: 'messages',  
   tagName: 'ul',
 
-  events: {
- //   'click .reply' : 'create_wish',
-  },
+  counter: 1,
+
+  template: hogan.compile('<li {{#stripe}}class="{{className}}"{{/stripe}}>{{body}}</li>'),
 
   initialize: function() {
     _.bindAll(this, 'render');
     this.collection.bind('add', this.addOne, this)
-    //this.collection.fetch()
   },
 
-  counter: 1,
-
-  addOne: function(model, index) {
-    var body = model.get('body')
-
-    var $el = $('<li data-author="this.m">' + body + '</li>' )
-    if (!(this.counter % 2))
-      $el.addClass('even')
-    $(this.el).append($el)
+  addOne: function(model) {
+    var tplVars = {
+      body: model.get('body'),
+    }
+    if (!(this.counter % 2)) {
+      tplVars.stripe = true;
+      tplVars.className = 'even'
+    }
+    var template = this.template.render(tplVars)
+    $(this.el).append(template)
     this.counter += 1
   },
 
-  // Add all items in the **Todos** collection at once.
   render: function() {
     this.collection.each(this.addOne, this);
     return this
   },
 })
-
-return ListView
 
 })

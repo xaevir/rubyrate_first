@@ -11,11 +11,10 @@ var SignupView = require('views/users/signup')
 
     template: jade.compile(tpl),
 
-    initialize: function(options){
-      this.user = options.user
+    initialize: function(){
       _.bindAll(this, 'render')
-      this.signupView = new SignupView({user: this.user, context: 'tabbed', passThru: true})
-      this.loginView = new LoginView({user: this.user, context: 'tabbed', passThru: true})
+      this.signupView = new SignupView({context: 'tabbed', passThru: true})
+      this.loginView = new LoginView({context: 'tabbed', passThru: true})
     },
 
     render: function(){

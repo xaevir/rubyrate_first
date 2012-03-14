@@ -7,46 +7,7 @@ var AlertView = require('views/site/alert')
   , MessagesView = require('views/messages')         
     
 
-var ItemView = Backbone.View.extend({
-
-  tagName:  "li",
-  className: 'wish-item',
-
-  template: hogan.compile('<blockquote>{{body}}</blockquote> <a href="#" class="reply">Reply</a> '),
-
-//  events: {
-//    'click .reply' : 'chat_transform',
-//  },
-
-  initialize: function(options) {
-    //this.model.bind('change', this.render, this);
-    _.bindAll(this, 'render', 'chat_transform');
-  },
-
-  render: function() {
-    var messagesView = MessagesView(this.model)
-    var body = this.model.get('body')
-    if (body.length > 160) {  
-      var body = body.substr(0, 160) 
-      body = body + '...'
-     }
-    var template = this.template.render({body: body});
-    $(this.el).html(template);
-    return this;
-  },
-
-  pass_to_chatView: function(e){
-    e.preventDefault() 
-    if (!user.get('username')) {
-      return new RestrictedView().render()  
-    }
-    var chatView = new ChatView({wishesView: this}) 
-  }  
-
-});
-
-
-var ListView = Backbone.View.extend({
+return Backbone.View.extend({
 
   className: 'wishes row',  
 
@@ -80,7 +41,5 @@ var ListView = Backbone.View.extend({
     return this
   },
 })
-
-return ListView
 
 })

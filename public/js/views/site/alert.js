@@ -1,9 +1,8 @@
 define(function(require) {
 
 var hogan  = require('libs/hogan.js/web/builds/1.0.5/hogan-1.0.5.min.amd')
-  , Alert  = require('models/alert')
 
-var AlertView = Backbone.View.extend({
+return Backbone.View.extend({
 
   className: 'alert',
 
@@ -41,9 +40,5 @@ var AlertView = Backbone.View.extend({
   },
 
 });
-
-
-
-return AlertView; 
 
 });

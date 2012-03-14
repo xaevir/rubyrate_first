@@ -1,6 +1,6 @@
 define(function(require) {
 
-  var Wish = Backbone.Model.extend({
+  var Wish = Backbone.DeepModel.extend({
 
     idAttribute: "_id",
 

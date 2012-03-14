@@ -1,5 +1,0 @@
-exports.index = function(req, res){
-  res.partial('index', function(err, html){
-    res.send({title: 'Ruby Rate', body: html});
-  });
-};

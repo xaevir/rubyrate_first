@@ -10,13 +10,11 @@ var express = require('express')
   , form = require("express-form")
   , filter = form.filter
   , validate = form.validate
-  , tame = require('tamejs').register() // register the *.tjs suffix
-  , site = require('./site')
-  , user = require('./user.tjs')
-//  , Backbone = require('backbone')
   , bcrypt = require('bcrypt')
   , requirejs = require('requirejs')
+
 //  ,  _ = require('underscore')
+//  , Backbone = require('backbone')
 
 db = mongo.db('localhost/rubyrate?auto_reconnect');
 
@@ -103,7 +101,7 @@ app.get('/', isXhr, function(req, res) {
   }
   res.partial('index', function(err, html){
     res.send({title: 'Ruby Rate', body: html});
- ot  });
+  });
 
 });
 
@@ -113,8 +111,6 @@ app.get('/signup', isXhr, function(req, res) {
     res.send({title: 'Sign Up', body: html});
   });
 });
-
-bcrypt = require('bcrypt')
 
 app.post('/signup', function(req, res){ 
   bcrypt.genSalt(10, function(err, salt){
@@ -130,33 +126,23 @@ app.post('/signup', function(req, res){
   }) 
 })
 
+app.get("/is-username-valid", function(req, res) {
+  db.collection('users').findOne({username: req.body.username}, function(err, user){
+    return user 
+      ? res.send(false) 
+      : res.send(true);
+  })
+})
 
-app.get("/is-username-valid", 
-    form(validate("username").required().isAlphanumeric().minLength(2).maxLength(60))
-  , isValidSimple 
-  , user.is_username_valid
-);
+app.get("/check-email", function(req, res){
+  db.collection('users').findOne({email: req.body.email}, function(err, user){
+    return user
+      ? res.send(false)
+      : res.send(true);
+  })
+})
 
-
-app.get("/check-email", 
-    form(validate("email").required().isEmail())
-  , isValid 
-  , user.check_email
-);
-/*
-app.get("/user", function(req, res) {
-  return req.session.user 
-    ? res.send({success: true, msg: 'user is logged in', data: {username: req.session.user.username}}) 
-    : res.send({success: false, msg: 'users is not logged in' })
-});
-*/
-
-app.get('/login', isXhr, function(req, res) {
-  res.partial(templates + '/users/login.jade', function(err, html){
-    res.send({title: 'Login', body: html});
-  });
-});
-
+app.get('/login', isXhr, function(req, res) { });
 
 app.post('/login_test', function(req, res) {
   requirejs(['libs/underscore/underscore', 'libs/backbone/backbone', 'models/wish', 'libs/backbone.validation'],
@@ -275,5 +261,5 @@ app.post('/messages', restrict, function(req, res) {
 })
 
 
-app.listen(3000);
+app.listen(5000);
 console.log("Express server listening on port %d in %s mode", app.address().port, app.settings.env);

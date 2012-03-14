@@ -8,11 +8,5 @@
     , "connect-redis": "latest"
     , "bcrypt": "latest"
     , "mongoskin": "latest"
-    , "express-form": "latest"
-    , "browserify": "latest"
   }
-  , "browserify" : { 
-//      "name" : "dnode" 
-//    , "main" : "./browser/index.js" 
-    , "base" : "./public/js"
 }

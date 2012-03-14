@@ -261,5 +261,5 @@ app.post('/messages', restrict, function(req, res) {
 })
 
 
-app.listen(5000);
+app.listen(8002);
 console.log("Express server listening on port %d in %s mode", app.address().port, app.settings.env);

@@ -6,15 +6,18 @@
 var express = require('express')
   , mongo = require('mongoskin')
   , RedisStore = require('connect-redis')(express)
-  , schemas = require('./schemas')
-  , form = require("express-form")
-  , filter = form.filter
-  , validate = form.validate
   , bcrypt = require('bcrypt')
   , requirejs = require('requirejs')
+  ,  _ = require('underscore')
+  , Backbone = require('backbone')
 
-//  ,  _ = require('underscore')
-//  , Backbone = require('backbone')
+
+//  , schemas = require('./schemas')
+//  , form = require("express-form")
+//  , filter = form.filter
+//  , validate = form.validate
+
+
 
 db = mongo.db('localhost/rubyrate?auto_reconnect');
 
@@ -46,6 +49,14 @@ app.configure('production', function(){
 });
 
 
+app.get('/*', function(req, res, next) {
+  if (req.headers.host.match(/^www/) !== null ) {
+    res.redirect('http://' + req.headers.host.replace(/^www\./, '') + req.url);
+  } else {
+    next();     
+  }
+})
+
 function restrict(req, res, next) {
   if (req.session.user) {
     next();
@@ -54,10 +65,6 @@ function restrict(req, res, next) {
   }
 }
 
-app.all('*',function(req,res,next){
-  console.log(req.url);
-  next();
-});
 
 function isXhr(req, res, next) {
   if (!(req.xhr)) {

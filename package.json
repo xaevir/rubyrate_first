@@ -8,5 +8,8 @@
     , "connect-redis": "latest"
     , "bcrypt": "latest"
     , "mongoskin": "latest"
+    , "requirejs": "latest"
+    , "underscore": "latest"
+    , "backbone" : "latest"
   }
 }

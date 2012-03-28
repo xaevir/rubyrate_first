@@ -8,16 +8,13 @@
     , "connect-redis": "latest"
     , "bcrypt": "latest"
     , "mongoskin": "latest"
-<<<<<<< HEAD
     , "nodemailer": "latest"
     , "hogan.js": "latest"
     , "backbone": "latest"
     , "underscore": "latest"
-=======
     , "requirejs": "latest"
     , "underscore": "latest"
     , "backbone" : "latest"
->>>>>>> 00ace41f8a935e1f127dc3b9141b268b91f149b9
   }
 }
 

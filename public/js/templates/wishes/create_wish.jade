@@ -1,0 +1,19 @@
+.modal-header
+  a.close(data-dismiss="modal") x 
+  h3 Create Wish 
+.modal-body
+  form(action="#")
+    label Wish
+    textarea.span4(name="body")
+
+    label postal code:
+    input.span3(name='postal_code', type='text')
+
+    label How soon to buy:
+    select.span3(name="urgence")
+      option(value="") -- Select Level of Urgence --
+      option(value="kick_tire") Kicking Tire
+      option(value="need_now") Need Now 
+    button.btn.btn-primary.btn-large(type="submit", disabled="true") Create Wish 
+
+

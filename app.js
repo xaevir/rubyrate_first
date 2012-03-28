@@ -2,20 +2,9 @@ var express = require('express')
   , mongo = require('mongoskin')
   , RedisStore = require('connect-redis')(express)
   , bcrypt = require('bcrypt')
-  , form = require("express-form")
   , fs = require('fs')
   , nodemailer = require("nodemailer")
   , Hogan = require('hogan.js')
-  , requirejs = require('requirejs')
-  ,  _ = require('underscore')
-  , Backbone = require('backbone')
-
-
-//  , schemas = require('./schemas')
-//  , form = require("express-form")
-//  , filter = form.filter
-//  , validate = form.validate
-
 
 
 Backbone = require('backbone')
@@ -102,25 +91,11 @@ function restrict(req, res, next) {
   }
 }
 
-<<<<<<< HEAD
 app.get('/', function(req, res) {
   res.render('index', function(err, html){
     res.send({title: 'Ruby Rate', body: html});
   });
 })
-=======
-
-function isXhr(req, res, next) {
-  if (!(req.xhr)) {
-    if (req.session.user)
-      res.render('layout', { user: {username: req.session.user.username, _id:  req.session.user._id}});
-    else 
-      res.render('layout', {user: {}});
-  }
-  else
-    next()
-}
->>>>>>> 00ace41f8a935e1f127dc3b9141b268b91f149b9
 
 app.get('/login', function(req, res) {});
 

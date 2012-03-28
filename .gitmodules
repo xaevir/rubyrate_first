@@ -7,3 +7,6 @@
 [submodule "public/js/libs/backbone.validation"]
 	path = public/js/libs/backbone.validation
 	url = git://github.com/thedersen/backbone.validation.git
+[submodule "public/js/libs/bootstrap"]
+	path = public/js/libs/bootstrap
+	url = git://github.com/twitter/bootstrap.git

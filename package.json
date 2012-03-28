@@ -8,5 +8,12 @@
     , "connect-redis": "latest"
     , "bcrypt": "latest"
     , "mongoskin": "latest"
+    , "nodemailer": "latest"
+    , "hogan.js": "latest"
+    , "backbone": "latest"
+    , "underscore": "latest"
   }
 }
+
+
+    

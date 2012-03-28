@@ -1,29 +1,23 @@
-
-/**
- * Module dependencies.
- */
-
 var express = require('express')
   , mongo = require('mongoskin')
   , RedisStore = require('connect-redis')(express)
-  , schemas = require('./schemas')
-  , form = require("express-form")
-  , filter = form.filter
-  , validate = form.validate
   , bcrypt = require('bcrypt')
+  , form = require("express-form")
+  , fs = require('fs')
+  , nodemailer = require("nodemailer")
+  , Hogan = require('hogan.js')
   , requirejs = require('requirejs')
 
-//  ,  _ = require('underscore')
-//  , Backbone = require('backbone')
 
-db = mongo.db('localhost/rubyrate?auto_reconnect');
+Backbone = require('backbone')
+_ = require('underscore')
+var  Validation = require('./public/js/libs/backbone.validation/backbone.validation.js')
 
-requirejs.config({
-    baseUrl: __dirname + '/public/js/',
-//    nodeRequire: require
-});
+var smtpTransport = nodemailer.createTransport("SMTP", {host: "localhost"})
 
-var app = module.exports = express.createServer();
+db = mongo.db('localhost/rubyrate?auto_reconnect')
+var staticServer = express.static(__dirname + '/public')
+var app = module.exports = express.createServer()
 
 app.configure(function(){
   app.set('views', __dirname + '/views');
@@ -34,17 +28,54 @@ app.configure(function(){
   app.use(express.cookieParser());
   app.use(express.session({ secret: "batman", store: new RedisStore }));
   app.use(app.router);
-  app.use(express.static(__dirname + '/public'));
 });
 
 app.configure('development', function(){
   app.use(express.errorHandler({ dumpExceptions: true, showStack: true })); 
-});
+})
 
 app.configure('production', function(){
   app.use(express.errorHandler()); 
+})
+
+app.get('/*', function(req, res, next) {
+  if (req.headers.host.match(/^www/) !== null ) res.redirect('http://' + req.headers.host.replace(/^www\./, '') + req.url, 301);
+  else next();
 });
 
+app.get('/css/*', function(req, res, next) {
+  staticServer(req, res, next)  
+})
+
+app.get('/js/*', function(req, res, next) {
+  staticServer(req, res, next)  
+})
+
+app.get('/img/*', function(req, res, next) {
+  staticServer(req, res, next)  
+})
+
+app.get('/fonts/*', function(req, res, next) {
+  staticServer(req, res, next)  
+})
+
+function userData(session){
+  var data = {user: {}}
+  if (session.user) {
+    data.user = {
+      username: session.user.username, 
+      _id:  session.user._id
+    }
+  }
+  return data
+}
+
+app.get('/*', function(req, res, next) { /* force xhr */
+  if (!(req.xhr)) 
+    res.render('layout', userData(req.session))
+  else 
+    next()
+})
 
 function restrict(req, res, next) {
   if (req.session.user) {
@@ -54,65 +85,83 @@ function restrict(req, res, next) {
   }
 }
 
-app.all('*',function(req,res,next){
-  console.log(req.url);
-  next();
-});
-
-function isXhr(req, res, next) {
-  if (!(req.xhr)) {
-    if (req.session.user)
-      res.render('layout', { user: {username: req.session.user.username, _id:  req.session.user._id}});
-    else 
-      res.render('layout', {user: {}});
-  }
-  else
-    next()
-}
-
-/*res_xhr = function(success, msg, errors) {
-  return {
-    success: success,
-    message: msg || '',
-    error: errors || {} 
-  }
-}
-*/
-function isValid(req, res, next) {
-  if (!req.form.isValid)
-    res.send({success: false, message: 'invalid data'});
-  else
-    next();
-}
-
-function isValidSimple(req, res, next) {
-  if (!req.form.isValid)
-    res.send(false);
-  else
-    next();
-}
-
-templates = __dirname + '/public/templates';
-
-app.get('/', isXhr, function(req, res) {
-  //TODO whats going on here?
-  if (req.session.user) {
-
-  }
-  res.partial('index', function(err, html){
+app.get('/', function(req, res) {
+  res.render('index', function(err, html){
     res.send({title: 'Ruby Rate', body: html});
   });
+})
 
-});
+app.get('/login', function(req, res) {});
 
+app.get('/contact', function(req, res) {});
 
-app.get('/signup', isXhr, function(req, res) {
-  res.partial(templates + '/users/signup.jade', function(err, html){
-    res.send({title: 'Sign Up', body: html});
+app.post('/contact', function(req, res) {
+  var message = {
+    // sender info
+    from: 'Ruby Rate Contact Page <contact@rubyrate.com>',
+    // Comma separated list of recipients
+    to: 'bobby.chambers33@gmail.com',
+    // Subject of the message
+    subject: 'Feedback from contact page', 
+  }
+
+  // TODO add cache from mailer code
+  fs.readFile(__dirname + '/views/email.mustache', function(err, result){
+    var template = result.toString()
+    template = Hogan.compile(result.toString())
+    message.html = template.render(req.body)
+    // send mail with defined transport object
+    smtpTransport.sendMail(message, function(error, response){
+        if(error){
+            console.log(error);
+        }else{
+            console.log("Message sent: " + response.message);
+        }
+        smtpTransport.close(); // shut down the connection pool, no more messages
+        res.send({
+          success: true, 
+          message: 'email sent'
+        })
+    })
+  })
+})
+
+// TODO use email check form backbone.validator 
+app.post('/session', function(req, res) {
+  var key
+  var spec = {}
+  try {
+    check(req.body.login).isEmail()
+    key = 'email'
+  } catch(e) {
+    key = 'username'
+  }
+  spec[key] = req.body.login  
+
+  db.collection('users').findOne(spec, function(err, user){
+    if (!user)
+      return res.send({message: 'user not found'});
+    bcrypt.compare(req.body.password, user.password, function(err, match) {
+      if (!match) 
+        return res.send({message: 'user not found'});
+      req.session.user = user;
+      user.password = '';
+      res.send(user)
+    })
+  })
+})
+
+app.del('/session', function(req, res) {
+  req.session.destroy(function(){
+      res.send({success: true, 
+                message: 'user logged out'
+      })
   });
 });
 
-app.post('/signup', function(req, res){ 
+app.get('/signup', restrict, function(req, res) { });
+
+app.post('/signup', restrict, function(req, res){ 
   bcrypt.genSalt(10, function(err, salt){
     bcrypt.hash(req.body.password, salt, function(err, hash){
       req.body.password = hash;
@@ -142,73 +191,7 @@ app.get("/check-email", function(req, res){
   })
 })
 
-app.get('/login', isXhr, function(req, res) { });
 
-app.post('/login_test', function(req, res) {
-  requirejs(['libs/underscore/underscore', 'libs/backbone/backbone', 'models/wish', 'libs/backbone.validation'],
-    function (a, b , Wish) {
-
-      var Model = Backbone.Model.extend({
-        validation: {
-          email: { required: true },
-          password: { required: true },
-        }
-      })
-      _.extend(Backbone.Validation.callbacks, {
-        valid: function(view, attr, selector) { },
-        invalid: function(view, attr, error, selector) {  }
-      });
-
-      var model = new Model(req.body)
-      var view = new Backbone.View.extend()
-      view.model = model
-      Backbone.Validation.bind(view);
-
-      if (model.isValid(true)) {   
-        console.log('cool all thru') 
-      }
-      else {
-        console.log('bad stuff') 
-      }
-  });
-
-})
-
-app.post('/session', function(req, res) {
-  db.collection('users').findOne({email: req.body.email}, function(err, user){
-    if (!user)   
-      return res.send({});
-    bcrypt.compare(req.body.password, user.password, function(err, match) {
-      if (!match) 
-        return res.send({})
-      req.session.user = user;
-      user.password = '';
-      res.send(user)
-    })
-  })
-})
-
-
-app.del('/session', function(req, res) {
-  req.session.destroy(function(){
-      res.send({success: true, 
-                message: 'user logged out'
-      })
-  });
-});
-/*
-app.post('/session', function(req, res) {
-  User.find({ email: req.body.user.email }).first(function(user) {
-    if (user && user.authenticate(req.body.user.password)) {
-      req.session.user_id = user.id;
-      res.redirect('/');
-    } else {
-      // TODO: Show error
-      res.redirect('/sessions/new');
-    }
-  }); 
-});
-*/
 app.post('/wishes', restrict, function(req, res) {
    requirejs(['libs/underscore/underscore', 'libs/backbone/backbone', 'models/wish', 'libs/backbone.validation'],
     function (a, b , Wish) {
@@ -240,7 +223,7 @@ app.get('/conversations', restrict, function(req, res) {
   })
 })
 
-app.get('/be-genie', isXhr, function(req, res) {
+app.get('/be-genie', function(req, res) {
   db.collection('messages').find({recipient: {$exists: false}}).toArray(function(err, result) {
       if (err) throw err;
       res.send(result)
@@ -259,7 +242,6 @@ app.post('/messages', restrict, function(req, res) {
     res.send({success: true, message: 'message inserted'})
   })
 })
-
 
 app.listen(8002);
 console.log("Express server listening on port %d in %s mode", app.address().port, app.settings.env);
